@@ -1,0 +1,179 @@
+# Pixel Classes — ม็อดคลาสอาชีพ + สกิลสุดอลังการ (Minecraft 1.20.1 Forge)
+
+เลือกคลาส (Origins-style) → ติดตั้งสกิลได้ **4 ช่อง** จากสกิลของคลาสนั้น (คลาสละ 6 สกิล) → กด **Z X C V** ปล่อยสกิล
+ทุกอย่าง **แก้ได้ด้วย Notepad** (ไฟล์ JSON): คูลดาวน์, ดาเมจ, มานา, เลือดคลาส, เอฟเฟกต์, เสียง · เพิ่มคลาส/สกิลใหม่ได้โดยไม่ต้องเขียนโค้ด
+ใส่ร่วมกับม็อด **Pixel Stats** (ที่ทำก่อนหน้า) ได้ — สเตตัสจะเสริมความแรงสกิลตามสาย แต่ไม่บังคับ
+
+> ⚠️ ผมยังไม่ได้ build/ทดสอบในเกมจริง (เครื่องของผมโหลด Forge ไม่ได้) ถ้า build ไม่ผ่านหรือเข้าเกมแล้วมีอะไรผิดปกติ ส่งข้อความ error กลับมาได้เลย
+
+---
+## 1) วิธี Build (ทีละขั้น) — ใช้ GitHub build ให้ (วิธีเดียวกับที่ใช้กับ pixelstats)
+
+1. เข้า https://github.com → ปุ่ม **+** มุมขวาบน → **New repository** → ชื่อ `pixelclasses` → **Public** → **Create repository**
+2. GitHub รับอัปโหลดครั้งละไม่เกิน 100 ไฟล์ จึงแบ่งโปรเจกต์เป็น 2 ส่วน (`pixelclasses-part1.zip` และ `pixelclasses-part2.zip`) — **แตกไฟล์ทั้งสอง** แล้วอัปโหลด **ทีละส่วน**:
+   - ส่วนที่ 1: ในหน้า repo กด **uploading an existing file** → ลากทุกไฟล์/โฟลเดอร์ที่อยู่ข้างในส่วนที่ 1 (เช่น `build.gradle`, `gradlew`, `gradle`, `src`, `examples`, `tools`) ไปวาง → กด **Commit changes**
+   - ส่วนที่ 2: กด **Add file → Upload files** → ลากโฟลเดอร์ `src` จากส่วนที่ 2 ไปวาง → **Commit changes** (ไฟล์จะรวมเข้ากับส่วนที่ 1 เอง ไม่ทับกัน)
+   - ห้ามลากไฟล์ zip, ห้ามลาก `.gradle`/`build`/`run` ถ้ามี · โฟลเดอร์ `.github` (ขึ้นต้นด้วยจุด) เว็บไม่รับตอนลาก ให้ทำข้อ 3 แทน
+3. กด **Add file → Create new file** → ช่องชื่อไฟล์พิมพ์ `.github/workflows/build.yml` → วางข้อความนี้ → **Commit changes**
+```yaml
+name: Build mod jar
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Build
+        run: chmod +x gradlew && ./gradlew build --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pixelclasses-jar
+          path: build/libs/*.jar
+```
+4. เปิดแท็บ **Actions** รอ 3–10 นาทีจนเป็นเครื่องหมายถูกเขียว → คลิกรอบนั้น → เลื่อนลงล่างสุดหัวข้อ **Artifacts** → โหลด **pixelclasses-jar** → แตก zip จะได้ `pixelclasses-1.0.0.jar`
+5. ถ้าเป็นกากบาทแดง: คลิกรอบนั้น → คลิก **build** → ใช้ช่อง **Search logs** พิมพ์ `error:` → แคปส่งกลับมา
+
+**Build บนเครื่องตัวเอง (ทางเลือก):** ต้องมี Java 17 → เปิด cmd ในโฟลเดอร์โปรเจกต์ → `gradlew.bat build` → ไฟล์อยู่ที่ `build/libs/`
+
+---
+## 2) ติดตั้งและเล่น
+- ต้องมี **Minecraft Java 1.20.1 + Forge 47.x** · นำ `pixelclasses-1.0.0.jar` ไปไว้ในโฟลเดอร์ `mods` (**ทั้งผู้เล่นและเซิร์ฟเวอร์**)
+- เข้าโลก → รอสักครู่ หน้าต่าง **เลือกคลาส** จะเด้งขึ้นเอง (หรือพิมพ์ `/class`) → คลิกการ์ดคลาส → **Choose**
+  ระบบจะติดตั้งสกิล 4 อันแรกให้ทันที
+- **J** = เปิดหน้าต่างสกิล: กดปุ่มเล็ก **1–4** ที่แถวสกิลเพื่อติดตั้งในช่องนั้น · คลิกช่องที่ติดตั้งแล้วเพื่อถอด · เมาส์ชี้สกิลเพื่อดูรายละเอียด
+- **Z X C V** = ปล่อยสกิลช่อง 1–4 (เปลี่ยนปุ่มได้ที่ Options → Controls → Pixel Classes)
+- มุมขวาล่างจอ: แถบมานา + ช่องสกิลพร้อมวงคูลดาวน์
+- สกิลโจมตีเฉพาะมอนสเตอร์ศัตรู (และผู้เล่นถ้าเปิด PvP) — ไม่ทำร้ายสัตว์/ชาวบ้านโดยค่าเริ่มต้น (ปรับได้ใน config)
+
+### คำสั่ง
+| คำสั่ง | ใครใช้ได้ | ความหมาย |
+|---|---|---|
+| `/class` | ทุกคน | เปิดหน้าเลือกคลาส (แบบ Origins) |
+| `/pixelclasses skills` (หรือ `/pc skills`) | ทุกคน | เปิดหน้าต่างสกิล |
+| `/pc list` | ทุกคน | แสดงคลาสและสกิลทั้งหมดที่โหลดอยู่ |
+| `/pc set @s wizard` | OP | บังคับตั้งคลาส (`wizard`/`archer`/`warrior` หรือ `namespace:ชื่อ`) |
+| `/pc clear @s` | OP | ถอดคลาส |
+| `/pc equip @s 2 meteor` | OP | ติดตั้งสกิลช่อง 2 |
+| `/pc cast @s meteor` | OP | **ปล่อยสกิลไหนก็ได้ฟรี** (ทดสอบเอฟเฟกต์/ปรับค่า) |
+| `/pc refill @s` | OP | มานาเต็ม + ล้างคูลดาวน์ทั้งหมด |
+| `/reload` | OP | โหลดไฟล์ JSON/datapack ใหม่ **ไม่ต้องปิดเกม** |
+
+เล่นเดี่ยว: ตอนสร้างโลกเปิด *Allow Cheats* หรือ Esc → *Open to LAN* → *Allow Cheats*
+
+---
+## 3) คลาสและสกิลที่มีให้
+
+### นักเวท (Wizard) — จอมเวทร่างบาง ร่ายเวทรุนแรงจากระยะไกล แต่ป้องกันตัวได้น้อย
+ทรัพยากร: **มานา** สูงสุด 140 ฟื้น 5.0/วินาที · แรงขึ้นตามสเตตัส Pixel Stats สาย **INT**
+
+| สกิล | คูลดาวน์ | ใช้ | ทำอะไร |
+|---|---|---|---|
+| **ลูกไฟ** (Fireball) | 3.0 วิ | 12 | ปาลูกไฟที่ระเบิดเมื่อชน เผาศัตรูในรัศมี |
+| **คลื่นน้ำแข็ง** (Frost Nova) | 9.0 วิ | 25 | ปล่อยคลื่นน้ำแข็งรอบตัว ทำดาเมจและทำให้ศัตรูเดินช้าลงมาก |
+| **ลำแสงอาคม** (Arcane Beam) | 7.0 วิ | 28 | ร่ายลำแสงเวททะลุทะลวง ฟันทุกอย่างในแนวตรง |
+| **อุกกาบาต** (Meteor) | 14.0 วิ | 45 | ทำเครื่องหมายบนพื้น แล้วเรียกอุกกาบาตตกลงมาทำลายล้างพื้นที่ |
+| **วาร์ป** (Blink) | 7.0 วิ | 18 | วาร์ปไปข้างหน้าในทิศที่มอง แล้วได้ความเร็วชั่วขณะ |
+| **เกราะอาคม** (Arcane Barrier) | 20.0 วิ | 35 | ห่อหุ้มตัวด้วยเกราะเวท ได้พลังป้องกันเสริม และผลักศัตรูรอบตัวออกไป |
+
+### นักธนู (Archer) — พรานคล่องแคล่ว กดดันศัตรูต่อเนื่องด้วยห่าธนูและกับดัก
+ทรัพยากร: **สมาธิ** สูงสุด 100 ฟื้น 6.0/วินาที · แรงขึ้นตามสเตตัส Pixel Stats สาย **DEX**
+
+| สกิล | คูลดาวน์ | ใช้ | ทำอะไร |
+|---|---|---|---|
+| **ยิงรัว** (Rapid Shot) | 5.0 วิ | 15 | ยิงลูกธนู 6 ดอกติดๆ กันอย่างรวดเร็ว |
+| **ธนูทะลวง** (Piercing Arrow) | 6.0 วิ | 20 | ยิงธนูทรงพลังที่ทะลุศัตรูทุกตัวในเส้นทาง |
+| **ห่าฝนธนู** (Arrow Rain) | 12.0 วิ | 35 | เล็งพื้นที่แล้วกระหน่ำห่าฝนลูกธนูลงมาจากฟ้า |
+| **สมาธิพราน** (Hunter's Focus) | 18.0 วิ | 25 | เพ่งสมาธิ วิ่งเร็วขึ้น กระโดดสูงขึ้น และทำให้ศัตรูใกล้ๆ เรืองแสง |
+| **กับดักพิษ** (Poison Trap) | 14.0 วิ | 25 | วางพื้นที่พิษบนพื้น ศัตรูที่เหยียบจะโดนพิษและเดินช้าลง |
+| **กลิ้งหลบ** (Evasive Roll) | 6.0 วิ | 14 | พุ่งถอยหลังหนีอันตราย แล้วยิงสวนทันที |
+
+### นักรบ (Warrior) — นักรบแนวหน้าสุดอึด ยืนสู้ยื้อไฟต์ รับดาเมจและฟันทุกอย่างที่อยู่ในระยะ
+ทรัพยากร: **พลังโกรธ** สูงสุด 100 ฟื้น 4.0/วินาที · แรงขึ้นตามสเตตัส Pixel Stats สาย **STR**
+
+| สกิล | คูลดาวน์ | ใช้ | ทำอะไร |
+|---|---|---|---|
+| **กระแทกพื้น** (Ground Slam) | 8.0 วิ | 20 | กระโดดขึ้นแล้วทุบพื้นอย่างรุนแรง ผลักและทำให้ศัตรูรอบๆ เดินช้าลง |
+| **พายุหมุน** (Whirlwind) | 10.0 วิ | 30 | หมุนตัวฟาดฟันศัตรูรอบตัวหลายครั้งติดต่อกัน |
+| **คำรามศึก** (Battle Cry) | 20.0 วิ | 25 | คำรามปลุกพลังตัวเองและพันธมิตร และบังคับให้ศัตรูหันมาโจมตีคุณ |
+| **กำแพงโล่** (Shield Wall) | 22.0 วิ | 30 | ตั้งโล่รับ ลดความเสียหายที่ได้รับมหาศาลและได้พลังป้องกันเสริม แต่เคลื่อนที่ช้าลง |
+| **พุ่งชน** (Charge) | 9.0 วิ | 20 | พุ่งไปข้างหน้าด้วยความเร็วสูง ชนศัตรูที่ขวางทางกระเด็น |
+| **ฟันกวาด** (Cleave) | 3.5 วิ | 10 | ฟันกวาดกว้างอย่างรวดเร็ว โดนศัตรูทุกตัวด้านหน้า |
+
+(ค่าในตารางคือค่าเริ่มต้นจากไฟล์ JSON — ถ้าคุณแก้ไฟล์ ตัวเลขในเกมจะเปลี่ยนตาม)
+
+---
+## 4) แก้ค่าเองได้ยังไง (สำคัญ!)
+
+ข้อมูลทั้งหมดอยู่ในไฟล์ JSON ที่ `src/main/resources/data/pixelclasses/pixelclasses/` (classes/ และ skills/) — แก้ได้ 2 วิธี:
+
+### วิธี A (แนะนำ ไม่ต้อง build ใหม่): ทับด้วย Datapack
+1. คัดลอกโฟลเดอร์ `examples/example_datapack` ไปไว้ที่ `.minecraft/saves/<ชื่อโลก>/datapacks/` (เปลี่ยนชื่อโฟลเดอร์ได้)
+2. คัดลอกไฟล์สกิล/คลาสที่อยากแก้จาก `data/pixelclasses/pixelclasses/...` มาไว้ใน datapack **ในพาธเดียวกัน** (เช่น `data/pixelclasses/pixelclasses/skills/fireball.json`) แล้วแก้ตัวเลขด้วย Notepad — ไฟล์ใน datapack จะทับของในม็อด
+3. ในเกมพิมพ์ `/reload` แล้วลอง `/pc cast @s fireball` ได้ทันที
+   (ตัวอย่างใน example_datapack: ไฟล์ `fireball.json` ถูกแก้ให้ดาเมจ 30/คูลดาวน์ 1 วิ เพื่อโชว์การทับค่า และ `starfall.json` คือสกิลใหม่ของ Wizard — ลบไฟล์ที่ไม่ต้องการออกได้)
+
+### วิธี B: แก้ไฟล์ในโปรเจกต์ แล้ว build ใหม่
+### ปรับสมดุลรวมทั้งหมดทีเดียว: ไฟล์ config
+`saves/<ชื่อโลก>/serverconfig/pixelclasses-server.toml` — ตัวคูณดาเมจ/คูลดาวน์/ค่ามานา/การฟื้นมานาทุกสกิล, ล็อกการเปลี่ยนคลาส, เปิด-ปิดเด้งหน้าเลือกคลาสตอนเข้าเกม, ให้สกิลทำร้ายผู้เล่น/สัตว์, ขีดจำกัดความปลอดภัย
+
+### สูตรลัด
+| อยากทำ | แก้ตรงไหน |
+|---|---|
+| คูลดาวน์/ราคามานา | `"cooldown"` (วินาที), `"mana_cost"` ในไฟล์สกิล |
+| ดาเมจ / รัศมี | `"damage"`, `"radius"` ใน action ชนิด `area` หรือ `projectile` |
+| ยิงลูกธนูเพิ่ม | `"repeat": {"count": 6, ...}` เพิ่มตัวเลข count |
+| เลือดคลาส/ความเร็ว/เกราะ | `"attributes"` ในไฟล์คลาส (เช่น `minecraft:generic.max_health`) |
+| มานาสูงสุด/ฟื้นเร็ว | `"mana": {"max": .., "regen": ..}` ในไฟล์คลาส |
+| สกิลแรงขึ้นตามสเตตัส | `"scaling": {"stat": "INT", "per_point": 0.01}` (0.01 = +1% ต่อแต้ม Pixel Stats) |
+| เปลี่ยนสี/ขนาดเอฟเฟกต์ | `"color"`, `"size"`, `"radius"`, `"count"` ใน `vfx` |
+
+### คลาสใหม่
+คัดลอก `classes/wizard.json` เป็นชื่อใหม่ → แก้ชื่อ/สี/มานา/attributes → ใส่ `"skills": [...]` → ในไฟล์สกิลแต่ละอันใส่ `"class": "namespace:ชื่อคลาส"`
+ไอคอนเป็นเท็กเจอร์ 16×16 ที่ `assets/<namespace>/textures/class|skill/<ชื่อ>.png` หรือชี้ `"icon"` ไปที่เท็กเจอร์ที่มีอยู่แล้ว
+**การทำ addon**: ทำเป็น datapack (หรือม็อดเล็กๆ) ที่มี `data/<namespace>/pixelclasses/classes|skills/*.json` — ม็อดจะโหลดให้เองและส่งไปให้ไคลเอนต์อัตโนมัติ ไฟล์ที่ผิดจะถูกข้ามพร้อมบันทึกใน log (`[PixelClasses] Skipping broken ...`) ไม่ทำให้เกมแครช
+
+### ตัวอ้างอิงฟิลด์
+**ไฟล์สกิล:** `class`, `name`, `description` (ข้อความธรรมดา หรือ `{"en": "..", "th": ".."}`), `icon` (ไม่ใส่ = `textures/skill/<ชื่อ>.png`), `cooldown` (วินาที), `mana_cost`, `scaling`, `actions` (ทำเรียงตามลำดับ)
+
+**ฟิลด์ที่ใช้ได้กับทุก action:** `type`, `delay` (tick, 20 = 1 วินาที), `repeat` {`count`, `interval`}, `scatter` (สุ่มกระจายรัศมี), `y_offset`, `at` (`context`/`caster`/`eye`/`aim`), `aim_range`, `direction` (`look`/`flat`/`down`/`up`), `vfx` [..], `sound` {`id`, `volume`, `pitch`}
+
+| `type` | ฟิลด์เฉพาะ |
+|---|---|
+| `area` | `radius`, `damage`, `damage_type` (`physical`/`magic`/`projectile`), `knockback` (ติดลบ = ดูดเข้า), `ignite` (วินาที), `heal`, `effects`, `affect` (`enemies`/`allies`/`self`/`all`), `cone` (องศา), `max_targets`, `hit_vfx` |
+| `projectile` | `speed`, `range`, `hit_radius`, `pierce`, `ignore_blocks`, `gravity`, `spread`, `damage`, `damage_type`, `knockback`, `ignite`, `effects`, `affect`, `trail`, `on_hit` [actions], `on_end` [actions] |
+| `dash` | `strength`, `vertical`, `backward` |
+| `blink` | `distance`, `arrival_vfx`, `arrival_sound` |
+| `taunt` | `radius` |
+| `vfx` | (เล่นแค่ `vfx` + `sound`) |
+
+**`vfx`:** `particle` (เช่น `minecraft:flame`, `dust`, `dust_color_transition`), `shape` (`point`/`sphere`/`ring`/`disc`/`line`/`spiral`/`column`/`burst`/`arc`/`cone`), `count` (≤ 400), `radius`, `height`, `turns`, `angle`, `length`, `speed`, `spread`, `color` (`#RRGGBB`), `color_to`, `size`, `y_offset`
+**`effects`:** `{"effect": "minecraft:slowness", "duration": 4.0, "amplifier": 1}`
+**เสียงของม็อด:** `pixelclasses:` + `cast_fire` `boom` `cast_ice` `ice_break` `cast_arcane` `zap` `blink` `arrow_shot` `arrow_hit` `whoosh` `slam` `warcry` `shield` `heal_chime` `charge` `slash` `buff` — หรือเสียงของ Minecraft/ม็อดอื่นก็ได้ เช่น `minecraft:entity.generic.explode`
+
+---
+## 5) ความปลอดภัย / ข้อจำกัด
+- โปรเจกไทล์เป็น "อนุภาคล้วน" ไม่มี entity ใหม่/โมเดลใหม่ จึงไม่ทำให้เรนเดอร์พัง · มีเพดานจำนวนเอฟเฟกต์ที่รอทำงานต่อผู้เล่น/เป้าหมายต่อสกิล/จำนวนอนุภาคต่อเอฟเฟกต์
+- เซิร์ฟเวอร์ตัดสินทุกอย่าง (มานา, คูลดาวน์, ดาเมจ) · ไคลเอนต์แค่ขอ จึงโกงด้วยแพ็กเก็ตปลอมไม่ได้
+- ม็อดนี้มีระบบมานา/พลังงานของตัวเอง **แยกจาก** Iron's Spells · Epic Fight/Origins/Apotheosis/Relics ใช้ร่วมได้ตามปกติ (สกิลทำดาเมจเหมือนผู้เล่นโจมตี) แต่ยังไม่ได้ผูกโค้ดเชื่อมกันโดยตรง
+- Bard (ฮีล/บัพ) และ Assassin ยังไม่รวมในรอบแรก — เพิ่มได้ด้วยไฟล์ JSON (มี action `area` แบบ `heal`/`effects` และ `dash`/`blink` รองรับไว้แล้ว)
+
+## 6) โครงสร้างโปรเจกต์
+```
+src/main/java/com/pixelclasses/
+  data/      อ่านไฟล์ JSON คลาส/สกิล (+ reload / sync ไปไคลเอนต์)
+  skill/     ตัวจัดตาราง, เลือกเป้าหมาย, ร่ายสกิล, action ทุกชนิด (skill/action/)
+  player/    ข้อมูลผู้เล่น (คลาส/มานา/คูลดาวน์), stat ของคลาส
+  vfx/       ตัวอธิบายเอฟเฟกต์พาร์ติเคิล      client/  UI, HUD, สร้างพาร์ติเคิล, ปุ่ม
+  network/ events/ command/ config/ registry/ integration/
+src/main/resources/data/pixelclasses/pixelclasses/   ← ไฟล์ JSON ของคลาส+สกิล (แก้ที่นี่)
+src/main/resources/assets/pixelclasses/              เท็กเจอร์ UI/ไอคอน, เสียง .ogg, ภาษา en/th
+examples/example_datapack/                           ตัวอย่าง datapack/addon
+tools/generate_assets.py, generate_data.py           สคริปต์สร้างเท็กเจอร์/เสียง/JSON
+```
+เท็กเจอร์ เสียง และโค้ดทั้งหมดสร้างขึ้นใหม่เอง (ไม่ได้คัดลอกจากม็อดอื่น)

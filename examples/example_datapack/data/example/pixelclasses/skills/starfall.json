@@ -1,0 +1,104 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Starfall (example)",
+    "th": "ดาวตก (ตัวอย่าง)"
+  },
+  "description": {
+    "en": "EXAMPLE addon skill: a shower of falling stars at the target area.",
+    "th": "สกิลตัวอย่างจาก addon: ฝนดาวตกลงบริเวณเป้าหมาย"
+  },
+  "cooldown": 10.0,
+  "mana_cost": 30,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "aim",
+      "aim_range": 30,
+      "repeat": {
+        "count": 5,
+        "interval": 4
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FFE060",
+          "size": 1.3,
+          "shape": "ring",
+          "radius": 4,
+          "count": 36
+        }
+      ]
+    },
+    {
+      "type": "projectile",
+      "delay": 8,
+      "at": "aim",
+      "aim_range": 30,
+      "repeat": {
+        "count": 14,
+        "interval": 3
+      },
+      "scatter": 4,
+      "y_offset": 16,
+      "direction": "down",
+      "speed": 1.6,
+      "range": 22,
+      "hit_radius": 0.8,
+      "sound": {
+        "id": "pixelclasses:cast_arcane",
+        "volume": 0.5,
+        "pitch": 1.6
+      },
+      "trail": [
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "point",
+          "count": 3,
+          "spread": 0.05
+        },
+        {
+          "particle": "dust",
+          "color": "#FFE060",
+          "size": 1.2,
+          "shape": "point",
+          "count": 3,
+          "spread": 0.08
+        }
+      ],
+      "on_end": [
+        {
+          "type": "area",
+          "radius": 2.2,
+          "damage": 5,
+          "damage_type": "magic",
+          "knockback": 0.5,
+          "vfx": [
+            {
+              "particle": "minecraft:firework",
+              "shape": "burst",
+              "count": 14,
+              "speed": 0.25
+            },
+            {
+              "particle": "minecraft:end_rod",
+              "shape": "burst",
+              "count": 10,
+              "speed": 0.3
+            }
+          ],
+          "sound": {
+            "id": "pixelclasses:zap",
+            "volume": 0.5,
+            "pitch": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "icon": "pixelclasses:textures/skill/meteor.png"
+}

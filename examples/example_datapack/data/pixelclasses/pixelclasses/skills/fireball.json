@@ -1,0 +1,131 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Fireball",
+    "th": "ลูกไฟ"
+  },
+  "description": {
+    "en": "Hurl a blazing fireball that explodes on impact and sets enemies on fire.",
+    "th": "ปาลูกไฟที่ระเบิดเมื่อชน เผาศัตรูในรัศมี"
+  },
+  "cooldown": 1.0,
+  "mana_cost": 12,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:cast_fire",
+        "volume": 0.9,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FF7A1A",
+          "size": 1.3,
+          "shape": "ring",
+          "radius": 1.3,
+          "count": 24
+        },
+        {
+          "particle": "minecraft:flame",
+          "shape": "spiral",
+          "radius": 0.8,
+          "height": 1.6,
+          "turns": 2,
+          "count": 16,
+          "speed": 0.01
+        }
+      ]
+    },
+    {
+      "type": "projectile",
+      "at": "eye",
+      "speed": 1.4,
+      "range": 42,
+      "hit_radius": 0.9,
+      "trail": [
+        {
+          "particle": "minecraft:flame",
+          "shape": "point",
+          "spread": 0.12,
+          "count": 5,
+          "speed": 0.01
+        },
+        {
+          "particle": "dust",
+          "color": "#FFB020",
+          "size": 1.4,
+          "shape": "point",
+          "count": 3,
+          "spread": 0.15
+        },
+        {
+          "particle": "minecraft:smoke",
+          "shape": "point",
+          "count": 1,
+          "spread": 0.1
+        }
+      ],
+      "on_end": [
+        {
+          "type": "area",
+          "radius": 3.6,
+          "damage": 30,
+          "damage_type": "fire",
+          "knockback": 0.9,
+          "ignite": 4,
+          "vfx": [
+            {
+              "particle": "minecraft:explosion",
+              "shape": "point",
+              "count": 2,
+              "spread": 0.6
+            },
+            {
+              "particle": "minecraft:flame",
+              "shape": "burst",
+              "count": 48,
+              "speed": 0.35
+            },
+            {
+              "particle": "dust_color_transition",
+              "color": "#FFD040",
+              "color_to": "#C02010",
+              "size": 1.6,
+              "shape": "sphere",
+              "radius": 2.4,
+              "count": 70,
+              "speed": 0.08
+            },
+            {
+              "particle": "minecraft:lava",
+              "shape": "burst",
+              "count": 14,
+              "speed": 0.25
+            },
+            {
+              "particle": "dust",
+              "color": "#FF6A00",
+              "size": 1.8,
+              "shape": "ring",
+              "radius": 3.4,
+              "count": 48,
+              "speed": 0.12
+            }
+          ],
+          "sound": {
+            "id": "pixelclasses:boom",
+            "volume": 1.2,
+            "pitch": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}
