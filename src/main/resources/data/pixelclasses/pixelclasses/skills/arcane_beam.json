@@ -1,0 +1,65 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Arcane Beam",
+    "th": "ลำแสงอาคม"
+  },
+  "description": {
+    "en": "Channel a piercing beam of raw magic that shreds everything in a line.",
+    "th": "ร่ายลำแสงเวททะลุทะลวง ฟันทุกอย่างในแนวตรง"
+  },
+  "cooldown": 7.0,
+  "mana_cost": 28,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "projectile",
+      "at": "eye",
+      "repeat": {
+        "count": 8,
+        "interval": 2
+      },
+      "speed": 7,
+      "range": 30,
+      "hit_radius": 0.8,
+      "pierce": 99,
+      "damage": 2.6,
+      "damage_type": "magic",
+      "knockback": 0.1,
+      "sound": {
+        "id": "pixelclasses:zap",
+        "volume": 0.6,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#B070FF",
+          "size": 1.3,
+          "shape": "line",
+          "length": 30,
+          "count": 60,
+          "spread": 0.04
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "line",
+          "length": 30,
+          "count": 22,
+          "spread": 0.06
+        },
+        {
+          "particle": "dust",
+          "color": "#FFFFFF",
+          "size": 0.8,
+          "shape": "line",
+          "length": 30,
+          "count": 24
+        }
+      ]
+    }
+  ]
+}

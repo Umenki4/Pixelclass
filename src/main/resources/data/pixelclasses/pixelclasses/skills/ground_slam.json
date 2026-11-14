@@ -1,0 +1,111 @@
+{
+  "class": "pixelclasses:warrior",
+  "name": {
+    "en": "Ground Slam",
+    "th": "กระแทกพื้น"
+  },
+  "description": {
+    "en": "Leap into the air and smash the ground, knocking back and slowing nearby enemies.",
+    "th": "กระโดดขึ้นแล้วทุบพื้นอย่างรุนแรง ผลักและทำให้ศัตรูรอบๆ เดินช้าลง"
+  },
+  "cooldown": 8.0,
+  "mana_cost": 20,
+  "scaling": {
+    "stat": "STR",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "dash",
+      "strength": 0.15,
+      "vertical": 0.85,
+      "sound": {
+        "id": "pixelclasses:whoosh",
+        "volume": 0.8,
+        "pitch": 0.8
+      },
+      "vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "ring",
+          "radius": 1.2,
+          "count": 14,
+          "speed": 0.1
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "at": "caster",
+      "delay": 9,
+      "radius": 5.5,
+      "damage": 11,
+      "damage_type": "physical",
+      "knockback": 1.4,
+      "effects": [
+        {
+          "effect": "minecraft:slowness",
+          "duration": 2.0,
+          "amplifier": 1
+        }
+      ],
+      "vfx": [
+        {
+          "particle": "minecraft:explosion",
+          "shape": "point",
+          "count": 3,
+          "spread": 1.2
+        },
+        {
+          "particle": "dust",
+          "color": "#FF8A30",
+          "size": 1.8,
+          "shape": "ring",
+          "radius": 5,
+          "count": 64,
+          "speed": 0.22
+        },
+        {
+          "particle": "minecraft:crit",
+          "shape": "burst",
+          "count": 40,
+          "speed": 0.5
+        },
+        {
+          "particle": "minecraft:cloud",
+          "shape": "ring",
+          "radius": 3,
+          "count": 30,
+          "speed": 0.2
+        },
+        {
+          "particle": "minecraft:large_smoke",
+          "shape": "disc",
+          "radius": 4,
+          "count": 14
+        }
+      ],
+      "sound": {
+        "id": "pixelclasses:slam",
+        "volume": 1.4,
+        "pitch": 1.0
+      }
+    },
+    {
+      "type": "vfx",
+      "at": "caster",
+      "delay": 11,
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FFD070",
+          "size": 1.4,
+          "shape": "ring",
+          "radius": 3,
+          "count": 40,
+          "speed": 0.12
+        }
+      ]
+    }
+  ]
+}

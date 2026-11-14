@@ -1,0 +1,46 @@
+{
+  "name": {
+    "en": "Warrior",
+    "th": "นักรบ"
+  },
+  "color": "#FF6B5B",
+  "description": {
+    "en": "A sturdy front-liner who holds the line, soaks up damage and cuts down everything in reach.",
+    "th": "นักรบแนวหน้าสุดอึด ยืนสู้ยื้อไฟต์ รับดาเมจและฟันทุกอย่างที่อยู่ในระยะ"
+  },
+  "mana": {
+    "name": {
+      "en": "Rage",
+      "th": "พลังโกรธ"
+    },
+    "color": "#FF6B5B",
+    "max": 100,
+    "regen": 4.0
+  },
+  "attributes": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "amount": 8.0,
+      "operation": "addition"
+    },
+    {
+      "attribute": "minecraft:generic.armor",
+      "amount": 2.0,
+      "operation": "addition"
+    },
+    {
+      "attribute": "minecraft:generic.knockback_resistance",
+      "amount": 0.2,
+      "operation": "addition"
+    }
+  ],
+  "skills": [
+    "pixelclasses:ground_slam",
+    "pixelclasses:whirlwind",
+    "pixelclasses:battle_cry",
+    "pixelclasses:shield_wall",
+    "pixelclasses:charge",
+    "pixelclasses:cleave"
+  ],
+  "icon": "pixelclasses:textures/class/warrior.png"
+}

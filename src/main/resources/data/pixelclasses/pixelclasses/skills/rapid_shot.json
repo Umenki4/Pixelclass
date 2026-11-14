@@ -1,0 +1,68 @@
+{
+  "class": "pixelclasses:archer",
+  "name": {
+    "en": "Rapid Shot",
+    "th": "ยิงรัว"
+  },
+  "description": {
+    "en": "Unleash a fast volley of six arrows in quick succession.",
+    "th": "ยิงลูกธนู 6 ดอกติดๆ กันอย่างรวดเร็ว"
+  },
+  "cooldown": 5.0,
+  "mana_cost": 15,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "projectile",
+      "at": "eye",
+      "repeat": {
+        "count": 6,
+        "interval": 2
+      },
+      "speed": 3.4,
+      "range": 48,
+      "hit_radius": 0.6,
+      "spread": 2.2,
+      "damage": 4.2,
+      "damage_type": "projectile",
+      "knockback": 0.15,
+      "sound": {
+        "id": "pixelclasses:arrow_shot",
+        "volume": 0.7,
+        "pitch": 1.0
+      },
+      "trail": [
+        {
+          "particle": "minecraft:crit",
+          "shape": "point",
+          "spread": 0.04,
+          "count": 2
+        },
+        {
+          "particle": "dust",
+          "color": "#7CFF6A",
+          "size": 0.9,
+          "shape": "point",
+          "count": 2,
+          "spread": 0.05
+        }
+      ],
+      "on_end": [
+        {
+          "type": "vfx",
+          "vfx": [
+            {
+              "particle": "minecraft:crit",
+              "shape": "burst",
+              "count": 6,
+              "speed": 0.2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

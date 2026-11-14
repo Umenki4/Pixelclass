@@ -1,0 +1,104 @@
+{
+  "class": "pixelclasses:archer",
+  "name": {
+    "en": "Poison Trap",
+    "th": "กับดักพิษ"
+  },
+  "description": {
+    "en": "Lay a toxic field on the ground that poisons and slows anything inside.",
+    "th": "วางพื้นที่พิษบนพื้น ศัตรูที่เหยียบจะโดนพิษและเดินช้าลง"
+  },
+  "cooldown": 14.0,
+  "mana_cost": 25,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:cast_arcane",
+        "volume": 0.7,
+        "pitch": 1.4
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#58C850",
+          "size": 1.2,
+          "shape": "spiral",
+          "radius": 0.8,
+          "height": 1.6,
+          "turns": 2,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "type": "vfx",
+      "at": "aim",
+      "aim_range": 22,
+      "repeat": {
+        "count": 6,
+        "interval": 10
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#4CC040",
+          "size": 1.3,
+          "shape": "ring",
+          "radius": 3.8,
+          "count": 40
+        },
+        {
+          "particle": "minecraft:witch",
+          "shape": "disc",
+          "radius": 3.6,
+          "count": 14
+        },
+        {
+          "particle": "minecraft:happy_villager",
+          "shape": "disc",
+          "radius": 3.4,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "at": "aim",
+      "aim_range": 22,
+      "delay": 10,
+      "repeat": {
+        "count": 6,
+        "interval": 10
+      },
+      "radius": 3.8,
+      "damage": 2,
+      "damage_type": "magic",
+      "effects": [
+        {
+          "effect": "minecraft:poison",
+          "duration": 3.0,
+          "amplifier": 1
+        },
+        {
+          "effect": "minecraft:slowness",
+          "duration": 2.0,
+          "amplifier": 1
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "minecraft:witch",
+          "shape": "burst",
+          "count": 8,
+          "speed": 0.2
+        }
+      ]
+    }
+  ]
+}

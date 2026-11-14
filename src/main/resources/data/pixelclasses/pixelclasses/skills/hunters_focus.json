@@ -1,0 +1,94 @@
+{
+  "class": "pixelclasses:archer",
+  "name": {
+    "en": "Hunter's Focus",
+    "th": "สมาธิพราน"
+  },
+  "description": {
+    "en": "Sharpen your senses: run faster, jump higher and reveal nearby enemies.",
+    "th": "เพ่งสมาธิ วิ่งเร็วขึ้น กระโดดสูงขึ้น และทำให้ศัตรูใกล้ๆ เรืองแสง"
+  },
+  "cooldown": 18.0,
+  "mana_cost": 25,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:buff",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#6BFF8A",
+          "size": 1.4,
+          "shape": "spiral",
+          "radius": 1,
+          "height": 2.2,
+          "turns": 3,
+          "count": 40
+        },
+        {
+          "particle": "dust",
+          "color": "#FFFFFF",
+          "size": 1.0,
+          "shape": "ring",
+          "radius": 2.5,
+          "count": 30,
+          "speed": 0.1
+        },
+        {
+          "particle": "minecraft:happy_villager",
+          "shape": "burst",
+          "count": 18,
+          "speed": 0.3
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:speed",
+          "duration": 10.0,
+          "amplifier": 1
+        },
+        {
+          "effect": "minecraft:jump_boost",
+          "duration": 10.0,
+          "amplifier": 1
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "enemies",
+      "radius": 24,
+      "damage": 0,
+      "max_targets": 40,
+      "effects": [
+        {
+          "effect": "minecraft:glowing",
+          "duration": 8.0,
+          "amplifier": 0
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "minecraft:crit",
+          "shape": "burst",
+          "count": 8,
+          "speed": 0.2
+        }
+      ]
+    }
+  ]
+}

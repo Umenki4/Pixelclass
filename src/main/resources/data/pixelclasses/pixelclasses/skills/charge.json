@@ -1,0 +1,85 @@
+{
+  "class": "pixelclasses:warrior",
+  "name": {
+    "en": "Charge",
+    "th": "พุ่งชน"
+  },
+  "description": {
+    "en": "Rush forward at high speed, battering and knocking aside anything in your way.",
+    "th": "พุ่งไปข้างหน้าด้วยความเร็วสูง ชนศัตรูที่ขวางทางกระเด็น"
+  },
+  "cooldown": 9.0,
+  "mana_cost": 20,
+  "scaling": {
+    "stat": "STR",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "dash",
+      "strength": 2.3,
+      "vertical": 0.1,
+      "sound": {
+        "id": "pixelclasses:charge",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "burst",
+          "count": 18,
+          "speed": 0.2
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "at": "caster",
+      "repeat": {
+        "count": 7,
+        "interval": 2
+      },
+      "radius": 2.4,
+      "damage": 5,
+      "damage_type": "physical",
+      "knockback": 1.5,
+      "vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "point",
+          "count": 6,
+          "spread": 0.4
+        },
+        {
+          "particle": "minecraft:crit",
+          "shape": "point",
+          "count": 5,
+          "spread": 0.5,
+          "speed": 0.2
+        },
+        {
+          "particle": "dust",
+          "color": "#FF8A30",
+          "size": 1.4,
+          "shape": "point",
+          "count": 6,
+          "spread": 0.5
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "minecraft:explosion",
+          "shape": "point",
+          "count": 1
+        },
+        {
+          "particle": "minecraft:crit",
+          "shape": "burst",
+          "count": 12,
+          "speed": 0.35
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Meteor",
+    "th": "อุกกาบาต"
+  },
+  "description": {
+    "en": "Mark the ground, then call down a huge meteor that devastates the area.",
+    "th": "ทำเครื่องหมายบนพื้น แล้วเรียกอุกกาบาตตกลงมาทำลายล้างพื้นที่"
+  },
+  "cooldown": 14.0,
+  "mana_cost": 45,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "aim",
+      "aim_range": 32,
+      "repeat": {
+        "count": 4,
+        "interval": 4
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FF3A20",
+          "size": 1.4,
+          "shape": "ring",
+          "radius": 5,
+          "count": 44
+        },
+        {
+          "particle": "dust",
+          "color": "#FF9A30",
+          "size": 1.2,
+          "shape": "ring",
+          "radius": 2.4,
+          "count": 24
+        }
+      ]
+    },
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:cast_arcane",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#C090FF",
+          "size": 1.3,
+          "shape": "spiral",
+          "radius": 1,
+          "height": 2.4,
+          "turns": 3,
+          "count": 30
+        },
+        {
+          "particle": "minecraft:enchant",
+          "shape": "burst",
+          "count": 30,
+          "speed": 0.5
+        }
+      ]
+    },
+    {
+      "type": "projectile",
+      "delay": 16,
+      "at": "aim",
+      "aim_range": 32,
+      "y_offset": 22,
+      "direction": "down",
+      "speed": 1.8,
+      "range": 40,
+      "hit_radius": 1.3,
+      "trail": [
+        {
+          "particle": "minecraft:flame",
+          "shape": "point",
+          "spread": 0.3,
+          "count": 10,
+          "speed": 0.02
+        },
+        {
+          "particle": "minecraft:large_smoke",
+          "shape": "point",
+          "spread": 0.3,
+          "count": 3
+        },
+        {
+          "particle": "dust_color_transition",
+          "color": "#FFD040",
+          "color_to": "#FF2000",
+          "size": 2.2,
+          "shape": "point",
+          "count": 6,
+          "spread": 0.3
+        }
+      ],
+      "on_end": [
+        {
+          "type": "area",
+          "radius": 5.5,
+          "damage": 20,
+          "damage_type": "fire",
+          "knockback": 1.5,
+          "ignite": 6,
+          "vfx": [
+            {
+              "particle": "minecraft:explosion",
+              "shape": "point",
+              "count": 6,
+              "spread": 2.0
+            },
+            {
+              "particle": "minecraft:flame",
+              "shape": "burst",
+              "count": 90,
+              "speed": 0.55
+            },
+            {
+              "particle": "dust_color_transition",
+              "color": "#FFE060",
+              "color_to": "#B01800",
+              "size": 2.0,
+              "shape": "sphere",
+              "radius": 4,
+              "count": 120,
+              "speed": 0.12
+            },
+            {
+              "particle": "minecraft:lava",
+              "shape": "burst",
+              "count": 24,
+              "speed": 0.35
+            },
+            {
+              "particle": "dust",
+              "color": "#FF5A10",
+              "size": 2.0,
+              "shape": "ring",
+              "radius": 5.2,
+              "count": 80,
+              "speed": 0.2
+            },
+            {
+              "particle": "minecraft:large_smoke",
+              "shape": "column",
+              "height": 5,
+              "count": 14,
+              "radius": 1.2
+            }
+          ],
+          "sound": {
+            "id": "pixelclasses:boom",
+            "volume": 1.7,
+            "pitch": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}

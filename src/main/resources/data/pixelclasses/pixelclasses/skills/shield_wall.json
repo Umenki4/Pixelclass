@@ -1,0 +1,76 @@
+{
+  "class": "pixelclasses:warrior",
+  "name": {
+    "en": "Shield Wall",
+    "th": "กำแพงโล่"
+  },
+  "description": {
+    "en": "Brace behind your shield: take far less damage and gain absorption, but move slower.",
+    "th": "ตั้งโล่รับ ลดความเสียหายที่ได้รับมหาศาลและได้พลังป้องกันเสริม แต่เคลื่อนที่ช้าลง"
+  },
+  "cooldown": 22.0,
+  "mana_cost": 30,
+  "scaling": {
+    "stat": "STR",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:shield",
+        "volume": 1.1,
+        "pitch": 0.85
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#7AB4FF",
+          "size": 1.5,
+          "shape": "sphere",
+          "radius": 1.5,
+          "count": 60,
+          "speed": 0.0
+        },
+        {
+          "particle": "dust",
+          "color": "#FFFFFF",
+          "size": 1.0,
+          "shape": "ring",
+          "radius": 1.6,
+          "count": 24,
+          "speed": 0.08
+        },
+        {
+          "particle": "minecraft:enchanted_hit",
+          "shape": "burst",
+          "count": 24,
+          "speed": 0.3
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:resistance",
+          "duration": 7.0,
+          "amplifier": 2
+        },
+        {
+          "effect": "minecraft:absorption",
+          "duration": 8.0,
+          "amplifier": 3
+        },
+        {
+          "effect": "minecraft:slowness",
+          "duration": 7.0,
+          "amplifier": 0
+        }
+      ]
+    }
+  ]
+}

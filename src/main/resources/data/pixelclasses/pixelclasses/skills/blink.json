@@ -1,0 +1,89 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Blink",
+    "th": "วาร์ป"
+  },
+  "description": {
+    "en": "Teleport a short distance in the direction you are looking, then gain a burst of speed.",
+    "th": "วาร์ปไปข้างหน้าในทิศที่มอง แล้วได้ความเร็วชั่วขณะ"
+  },
+  "cooldown": 7.0,
+  "mana_cost": 18,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "blink",
+      "distance": 13,
+      "sound": {
+        "id": "pixelclasses:blink",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      "arrival_sound": {
+        "id": "pixelclasses:blink",
+        "volume": 0.8,
+        "pitch": 1.35
+      },
+      "vfx": [
+        {
+          "particle": "minecraft:portal",
+          "shape": "burst",
+          "count": 40,
+          "speed": 0.6
+        },
+        {
+          "particle": "dust",
+          "color": "#B070FF",
+          "size": 1.4,
+          "shape": "ring",
+          "radius": 1.2,
+          "count": 26
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "column",
+          "height": 2,
+          "count": 10
+        }
+      ],
+      "arrival_vfx": [
+        {
+          "particle": "minecraft:portal",
+          "shape": "burst",
+          "count": 40,
+          "speed": 0.6
+        },
+        {
+          "particle": "dust",
+          "color": "#80E8FF",
+          "size": 1.4,
+          "shape": "ring",
+          "radius": 1.2,
+          "count": 26
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "burst",
+          "count": 14,
+          "speed": 0.25
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:speed",
+          "duration": 2.5,
+          "amplifier": 1
+        }
+      ]
+    }
+  ]
+}

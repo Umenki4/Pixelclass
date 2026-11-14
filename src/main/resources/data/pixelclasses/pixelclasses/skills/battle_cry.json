@@ -1,0 +1,101 @@
+{
+  "class": "pixelclasses:warrior",
+  "name": {
+    "en": "Battle Cry",
+    "th": "คำรามศึก"
+  },
+  "description": {
+    "en": "Roar to empower yourself and nearby allies and force enemies to focus you.",
+    "th": "คำรามปลุกพลังตัวเองและพันธมิตร และบังคับให้ศัตรูหันมาโจมตีคุณ"
+  },
+  "cooldown": 20.0,
+  "mana_cost": 25,
+  "scaling": {
+    "stat": "STR",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:warcry",
+        "volume": 1.2,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FF4A30",
+          "size": 1.6,
+          "shape": "spiral",
+          "radius": 1.2,
+          "height": 2.4,
+          "turns": 3,
+          "count": 50
+        },
+        {
+          "particle": "dust",
+          "color": "#FFC040",
+          "size": 1.4,
+          "shape": "ring",
+          "radius": 4,
+          "count": 40,
+          "speed": 0.15
+        },
+        {
+          "particle": "minecraft:flame",
+          "shape": "burst",
+          "count": 24,
+          "speed": 0.25
+        }
+      ]
+    },
+    {
+      "type": "vfx",
+      "at": "caster",
+      "delay": 3,
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#FF7A40",
+          "size": 1.5,
+          "shape": "ring",
+          "radius": 7,
+          "count": 70,
+          "speed": 0.2
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "allies",
+      "radius": 9,
+      "damage": 0,
+      "effects": [
+        {
+          "effect": "minecraft:strength",
+          "duration": 12.0,
+          "amplifier": 1
+        },
+        {
+          "effect": "minecraft:regeneration",
+          "duration": 6.0,
+          "amplifier": 0
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "minecraft:flame",
+          "shape": "burst",
+          "count": 10,
+          "speed": 0.15
+        }
+      ]
+    },
+    {
+      "type": "taunt",
+      "radius": 10
+    }
+  ]
+}

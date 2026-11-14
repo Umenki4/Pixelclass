@@ -1,0 +1,36 @@
+{
+  "name": {
+    "en": "Wizard",
+    "th": "นักเวท"
+  },
+  "color": "#9B6BFF",
+  "description": {
+    "en": "A fragile master of the arcane. Devastating spells from a distance, but very little protection.",
+    "th": "จอมเวทร่างบาง ร่ายเวทรุนแรงจากระยะไกล แต่ป้องกันตัวได้น้อย"
+  },
+  "mana": {
+    "name": {
+      "en": "Mana",
+      "th": "มานา"
+    },
+    "color": "#5A8CFF",
+    "max": 140,
+    "regen": 5.0
+  },
+  "attributes": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "amount": -4.0,
+      "operation": "addition"
+    }
+  ],
+  "skills": [
+    "pixelclasses:fireball",
+    "pixelclasses:frost_nova",
+    "pixelclasses:arcane_beam",
+    "pixelclasses:meteor",
+    "pixelclasses:blink",
+    "pixelclasses:arcane_barrier"
+  ],
+  "icon": "pixelclasses:textures/class/wizard.png"
+}

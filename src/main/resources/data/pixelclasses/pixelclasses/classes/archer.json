@@ -1,0 +1,36 @@
+{
+  "name": {
+    "en": "Archer",
+    "th": "นักธนู"
+  },
+  "color": "#6BE36B",
+  "description": {
+    "en": "A nimble marksman who keeps pressure on with a constant stream of arrows and traps.",
+    "th": "พรานคล่องแคล่ว กดดันศัตรูต่อเนื่องด้วยห่าธนูและกับดัก"
+  },
+  "mana": {
+    "name": {
+      "en": "Focus",
+      "th": "สมาธิ"
+    },
+    "color": "#6BE36B",
+    "max": 100,
+    "regen": 6.0
+  },
+  "attributes": [
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.08,
+      "operation": "multiply_base"
+    }
+  ],
+  "skills": [
+    "pixelclasses:rapid_shot",
+    "pixelclasses:piercing_arrow",
+    "pixelclasses:arrow_rain",
+    "pixelclasses:hunters_focus",
+    "pixelclasses:poison_trap",
+    "pixelclasses:evasive_roll"
+  ],
+  "icon": "pixelclasses:textures/class/archer.png"
+}

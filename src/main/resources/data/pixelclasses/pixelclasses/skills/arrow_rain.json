@@ -1,0 +1,120 @@
+{
+  "class": "pixelclasses:archer",
+  "name": {
+    "en": "Arrow Rain",
+    "th": "ห่าฝนธนู"
+  },
+  "description": {
+    "en": "Mark an area and rain a barrage of arrows from the sky.",
+    "th": "เล็งพื้นที่แล้วกระหน่ำห่าฝนลูกธนูลงมาจากฟ้า"
+  },
+  "cooldown": 12.0,
+  "mana_cost": 35,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "aim",
+      "aim_range": 28,
+      "repeat": {
+        "count": 12,
+        "interval": 4
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#5CFF7A",
+          "size": 1.3,
+          "shape": "ring",
+          "radius": 4.8,
+          "count": 44
+        },
+        {
+          "particle": "dust",
+          "color": "#FFFFFF",
+          "size": 0.9,
+          "shape": "ring",
+          "radius": 2.4,
+          "count": 20
+        }
+      ]
+    },
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:arrow_shot",
+        "volume": 1.0,
+        "pitch": 0.7
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#7CFF6A",
+          "size": 1.2,
+          "shape": "spiral",
+          "radius": 0.9,
+          "height": 2,
+          "turns": 2,
+          "count": 20
+        }
+      ]
+    },
+    {
+      "type": "projectile",
+      "delay": 6,
+      "at": "aim",
+      "aim_range": 28,
+      "repeat": {
+        "count": 26,
+        "interval": 2
+      },
+      "scatter": 4.8,
+      "y_offset": 18,
+      "direction": "down",
+      "speed": 2.4,
+      "range": 26,
+      "hit_radius": 0.7,
+      "damage": 3.2,
+      "damage_type": "projectile",
+      "trail": [
+        {
+          "particle": "dust",
+          "color": "#8CFF70",
+          "size": 1.0,
+          "shape": "point",
+          "count": 2,
+          "spread": 0.04
+        },
+        {
+          "particle": "minecraft:crit",
+          "shape": "point",
+          "count": 1,
+          "spread": 0.03
+        }
+      ],
+      "on_end": [
+        {
+          "type": "vfx",
+          "vfx": [
+            {
+              "particle": "minecraft:crit",
+              "shape": "burst",
+              "count": 5,
+              "speed": 0.18
+            },
+            {
+              "particle": "minecraft:poof",
+              "shape": "point",
+              "count": 1,
+              "spread": 0.2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "ui_open": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_open",
+        "stream": false
+      }
+    ]
+  },
+  "ui_close": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_close",
+        "stream": false
+      }
+    ]
+  },
+  "ui_hover": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_hover",
+        "stream": false
+      }
+    ]
+  },
+  "ui_click": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_click",
+        "stream": false
+      }
+    ]
+  },
+  "ui_select": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_select",
+        "stream": false
+      }
+    ]
+  },
+  "ui_equip": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_equip",
+        "stream": false
+      }
+    ]
+  },
+  "ui_deny": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ui_deny",
+        "stream": false
+      }
+    ]
+  },
+  "cast_fire": {
+    "sounds": [
+      {
+        "name": "pixelclasses:cast_fire",
+        "stream": false
+      }
+    ]
+  },
+  "boom": {
+    "sounds": [
+      {
+        "name": "pixelclasses:boom",
+        "stream": false
+      }
+    ]
+  },
+  "cast_ice": {
+    "sounds": [
+      {
+        "name": "pixelclasses:cast_ice",
+        "stream": false
+      }
+    ]
+  },
+  "ice_break": {
+    "sounds": [
+      {
+        "name": "pixelclasses:ice_break",
+        "stream": false
+      }
+    ]
+  },
+  "cast_arcane": {
+    "sounds": [
+      {
+        "name": "pixelclasses:cast_arcane",
+        "stream": false
+      }
+    ]
+  },
+  "zap": {
+    "sounds": [
+      {
+        "name": "pixelclasses:zap",
+        "stream": false
+      }
+    ]
+  },
+  "blink": {
+    "sounds": [
+      {
+        "name": "pixelclasses:blink",
+        "stream": false
+      }
+    ]
+  },
+  "arrow_shot": {
+    "sounds": [
+      {
+        "name": "pixelclasses:arrow_shot",
+        "stream": false
+      }
+    ]
+  },
+  "arrow_hit": {
+    "sounds": [
+      {
+        "name": "pixelclasses:arrow_hit",
+        "stream": false
+      }
+    ]
+  },
+  "whoosh": {
+    "sounds": [
+      {
+        "name": "pixelclasses:whoosh",
+        "stream": false
+      }
+    ]
+  },
+  "slam": {
+    "sounds": [
+      {
+        "name": "pixelclasses:slam",
+        "stream": false
+      }
+    ]
+  },
+  "warcry": {
+    "sounds": [
+      {
+        "name": "pixelclasses:warcry",
+        "stream": false
+      }
+    ]
+  },
+  "shield": {
+    "sounds": [
+      {
+        "name": "pixelclasses:shield",
+        "stream": false
+      }
+    ]
+  },
+  "heal_chime": {
+    "sounds": [
+      {
+        "name": "pixelclasses:heal_chime",
+        "stream": false
+      }
+    ]
+  },
+  "charge": {
+    "sounds": [
+      {
+        "name": "pixelclasses:charge",
+        "stream": false
+      }
+    ]
+  },
+  "slash": {
+    "sounds": [
+      {
+        "name": "pixelclasses:slash",
+        "stream": false
+      }
+    ]
+  },
+  "buff": {
+    "sounds": [
+      {
+        "name": "pixelclasses:buff",
+        "stream": false
+      }
+    ]
+  }
+}

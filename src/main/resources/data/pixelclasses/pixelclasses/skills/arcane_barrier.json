@@ -1,0 +1,99 @@
+{
+  "class": "pixelclasses:wizard",
+  "name": {
+    "en": "Arcane Barrier",
+    "th": "เกราะอาคม"
+  },
+  "description": {
+    "en": "Wrap yourself in a barrier of magic: gain absorption and blast nearby enemies away.",
+    "th": "ห่อหุ้มตัวด้วยเกราะเวท ได้พลังป้องกันเสริม และผลักศัตรูรอบตัวออกไป"
+  },
+  "cooldown": 20.0,
+  "mana_cost": 35,
+  "scaling": {
+    "stat": "INT",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:shield",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#A070FF",
+          "size": 1.4,
+          "shape": "spiral",
+          "radius": 1.1,
+          "height": 2.2,
+          "turns": 3,
+          "count": 44
+        },
+        {
+          "particle": "dust",
+          "color": "#80E0FF",
+          "size": 1.2,
+          "shape": "spiral",
+          "radius": 0.8,
+          "height": 2.2,
+          "turns": -3,
+          "count": 36
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "sphere",
+          "radius": 1.4,
+          "count": 26,
+          "speed": 0.02
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:absorption",
+          "duration": 10.0,
+          "amplifier": 2
+        },
+        {
+          "effect": "minecraft:resistance",
+          "duration": 4.0,
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "delay": 2,
+      "radius": 4.5,
+      "damage": 3,
+      "damage_type": "magic",
+      "knockback": 1.4,
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#C090FF",
+          "size": 1.5,
+          "shape": "ring",
+          "radius": 4.2,
+          "count": 56,
+          "speed": 0.1
+        },
+        {
+          "particle": "minecraft:enchanted_hit",
+          "shape": "burst",
+          "count": 30,
+          "speed": 0.4
+        }
+      ]
+    }
+  ]
+}

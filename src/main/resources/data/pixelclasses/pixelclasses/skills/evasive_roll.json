@@ -1,0 +1,90 @@
+{
+  "class": "pixelclasses:archer",
+  "name": {
+    "en": "Evasive Roll",
+    "th": "กลิ้งหลบ"
+  },
+  "description": {
+    "en": "Dive backwards out of danger, then snap off a quick counter-shot.",
+    "th": "พุ่งถอยหลังหนีอันตราย แล้วยิงสวนทันที"
+  },
+  "cooldown": 6.0,
+  "mana_cost": 14,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "dash",
+      "strength": 1.5,
+      "vertical": 0.28,
+      "backward": true,
+      "sound": {
+        "id": "pixelclasses:whoosh",
+        "volume": 0.9,
+        "pitch": 1.0
+      },
+      "vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "ring",
+          "radius": 1,
+          "count": 16,
+          "speed": 0.1
+        },
+        {
+          "particle": "minecraft:poof",
+          "shape": "burst",
+          "count": 10,
+          "speed": 0.15
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:speed",
+          "duration": 3.0,
+          "amplifier": 1
+        }
+      ]
+    },
+    {
+      "type": "projectile",
+      "delay": 3,
+      "at": "eye",
+      "speed": 3.5,
+      "range": 40,
+      "hit_radius": 0.7,
+      "spread": 0.6,
+      "damage": 6,
+      "damage_type": "projectile",
+      "knockback": 0.3,
+      "sound": {
+        "id": "pixelclasses:arrow_shot",
+        "volume": 0.9,
+        "pitch": 1.0
+      },
+      "trail": [
+        {
+          "particle": "minecraft:crit",
+          "shape": "point",
+          "spread": 0.04,
+          "count": 2
+        },
+        {
+          "particle": "dust",
+          "color": "#9CFF80",
+          "size": 1.0,
+          "shape": "point",
+          "count": 2,
+          "spread": 0.05
+        }
+      ]
+    }
+  ]
+}
