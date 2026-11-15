@@ -104,6 +104,22 @@ public final class VfxRenderer {
                     level.addParticle(o, px + cx * s.radius, py + 1.0, pz + cz * s.radius, cx * sp, 0, cz * sp);
                 }
             }
+            case "slash" -> {
+                // a crisp crescent streak facing the viewer; "roll" tilts it (0 = smile, 90 = vertical, 45/-45 = diagonal)
+                Vec3 right = d.cross(new Vec3(0, 1, 0));
+                right = right.lengthSqr() < 1.0E-6 ? new Vec3(1, 0, 0) : right.normalize();
+                Vec3 up = right.cross(d).normalize();
+                double roll = Math.toRadians(s.roll);
+                Vec3 ax = right.scale(Math.cos(roll)).add(up.scale(Math.sin(roll)));
+                Vec3 ay = up.scale(Math.cos(roll)).subtract(right.scale(Math.sin(roll)));
+                Vec3 center = new Vec3(px, py, pz).add(d.scale(s.length));
+                double half = Math.toRadians(s.angle) / 2.0;
+                for (int i = 0; i < n; i++) {
+                    double a = -half + 2.0 * half * (i + 0.5) / n;
+                    Vec3 p = center.add(ax.scale(Math.sin(a) * s.radius)).add(ay.scale((1.0 - Math.cos(a)) * s.radius * 0.6));
+                    level.addParticle(o, p.x, p.y, p.z, 0, 0, 0);
+                }
+            }
             case "cone" -> {
                 Vec3 side = d.cross(new Vec3(0, 1, 0));
                 side = side.lengthSqr() < 1.0E-6 ? new Vec3(1, 0, 0) : side.normalize();

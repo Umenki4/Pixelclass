@@ -185,18 +185,77 @@ def logo():
     im.alpha_composite(ic_fireball().resize((24,24), Image.NEAREST), (52,78)); im.alpha_composite(ic_pierce().resize((24,24), Image.NEAREST), (20,78)); im.alpha_composite(ic_slam().resize((24,24), Image.NEAREST), (84,78))
     return im
 
+
+# ---- Assassin set (clean silver / cyan / violet)
+P.update(sl=(232,246,255,255), cy=(95,230,255,255), vi=(154,123,255,255), dvi=(80,56,170,255), nv=(34,40,70,255), dk=(24,28,48,255), rd2=(255,70,90,255))
+def dagger(d, x0, y0, x1, y1, w=2):
+    d.line([(x0,y0),(x1,y1)], fill=P['sl'], width=w)
+    d.line([(x0,y0),(x1,y1)], fill=P['cy'], width=1)
+def ic_shadow_strike():
+    im = img(); d = ImageDraw.Draw(im)
+    for dx in (-3, -1): d.line([(2+dx,13),(7,8)], fill=P['dvi'], width=2)
+    dagger(d, 13, 2, 6, 9); dagger(d, 3, 2, 10, 9)
+    d.line([(4,11),(8,11)], fill=P['vi']); d.point((8,12), fill=P['cy']); d.point((12,11), fill=P['cy']); d.point((13,12), fill=P['vi'])
+    return outline(im)
+def ic_blade_flurry():
+    im = img(); d = ImageDraw.Draw(im)
+    d.arc([0,2,15,17], 215, 325, fill=P['sl'], width=2); d.arc([-2,-1,13,14], 20, 130, fill=P['cy'], width=2)
+    d.arc([3,0,18,15], 160, 270, fill=P['vi'], width=2); d.point((13,3), fill=P['sl']); d.point((2,12), fill=P['sl'])
+    return outline(im)
+def ic_phantom_lunge():
+    im = img(); d = ImageDraw.Draw(im)
+    for i, c in enumerate((P['dvi'], P['vi'])): d.line([(1+i*3, 10),(5+i*3,10)], fill=c, width=2)
+    d.line([(1,6),(6,6)], fill=P['dvi']); d.line([(1,13),(6,13)], fill=P['dvi'])
+    d.polygon([(15,8),(8,5),(8,11)], fill=P['sl']); d.line([(8,8),(14,8)], fill=P['cy']); d.line([(6,5),(6,11)], fill=P['vi'])
+    return outline(im)
+def ic_smoke_veil():
+    im = img(); d = ImageDraw.Draw(im)
+    for box, c in (((1,6,8,13),P['gr']),((6,3,14,11),P['sv']),((5,8,14,14),P['gr']),((3,4,9,9),P['sv'])): d.ellipse(box, fill=c)
+    d.point((7,8), fill=P['cy']); d.point((10,8), fill=P['cy']); d.point((13,2), fill=P['vi']); d.point((2,3), fill=P['cy'])
+    return outline(im)
+def ic_throwing_knives():
+    im = img(); d = ImageDraw.Draw(im)
+    for (x0,y0,x1,y1) in ((2,13,10,5),(1,9,10,6),(4,14,11,8)):
+        d.line([(x0,y0),(x1,y1)], fill=P['dvi'], width=1)
+        d.polygon([(x1+3,y1-3),(x1-1,y1-1),(x1+1,y1+1)], fill=P['sl'])
+    d.point((13,2), fill=P['cy']); d.point((14,5), fill=P['vi'])
+    return outline(im)
+def ic_execution():
+    im = img(); d = ImageDraw.Draw(im)
+    d.line([(2,2),(13,13)], fill=P['rd2'], width=1); d.line([(13,2),(2,13)], fill=P['rd2'], width=1)
+    d.ellipse([3,3,12,12], outline=P['rd2'])
+    d.line([(8,0),(8,9)], fill=P['sl'], width=2); d.line([(8,0),(8,9)], fill=P['cy'], width=1); d.polygon([(8,12),(6,8),(10,8)], fill=P['sl'])
+    d.line([(5,5),(11,5)], fill=P['vi'])
+    return outline(im)
+def cls_assassin():
+    im = img(); d = ImageDraw.Draw(im)
+    d.polygon([(8,1),(13,7),(14,15),(2,15),(3,7)], fill=P['dvi']); d.polygon([(8,3),(11,7),(11,12),(5,12),(5,7)], fill=P['dk'])
+    d.rectangle([6,7,7,8], fill=P['cy']); d.rectangle([9,7,10,8], fill=P['cy'])
+    d.line([(3,13),(7,15)], fill=P['sl']); d.line([(13,13),(9,15)], fill=P['sl']); d.point((8,1), fill=P['vi'])
+    return outline(im)
+def item_shadow_dagger():
+    im = img(); d = ImageDraw.Draw(im)
+    d.line([(13,2),(6,9)], fill=P['sl'], width=3); d.line([(13,2),(6,9)], fill=P['cy'], width=1)
+    d.line([(4,8),(8,12)], fill=P['dvi'], width=2); d.line([(5,10),(3,12)], fill=P['nv'], width=2); d.rectangle([1,12,3,14], fill=P['vi'])
+    d.point((2,13), fill=P['cy']); d.point((12,3), fill=P['sl'])
+    return outline(im)
+
 ui = {"panel": panel(), "row": row(), "row_hover": row(True), "banner": banner(), "slot": slot()}
 for n, im in ui.items(): im.save(os.path.join(GUI, n + ".png"))
 logo().save(os.path.join(ASSETS, "..", "..", "logo.png"))
-for n, f in (("wizard", cls_wizard), ("archer", cls_archer), ("warrior", cls_warrior)): f().save(os.path.join(CLASS, n + ".png"))
+for n, f in (("wizard", cls_wizard), ("archer", cls_archer), ("warrior", cls_warrior), ("assassin", cls_assassin)): f().save(os.path.join(CLASS, n + ".png"))
+ITEM = os.path.join(ASSETS, "textures", "item"); os.makedirs(ITEM, exist_ok=True); item_shadow_dagger().save(os.path.join(ITEM, "shadow_dagger.png"))
+MODELS = os.path.join(ASSETS, "models", "item"); os.makedirs(MODELS, exist_ok=True)
+json.dump({"parent": "minecraft:item/handheld", "textures": {"layer0": "pixelclasses:item/shadow_dagger"}}, open(os.path.join(MODELS, "shadow_dagger.json"), "w"), indent=2)
 skills = dict(fireball=ic_fireball, frost_nova=ic_frost, arcane_beam=ic_beam, meteor=ic_meteor, blink=ic_blink, arcane_barrier=ic_barrier,
               rapid_shot=ic_rapid, piercing_arrow=ic_pierce, arrow_rain=ic_rain, hunters_focus=ic_focus, poison_trap=ic_poison, evasive_roll=ic_roll,
-              ground_slam=ic_slam, whirlwind=ic_whirl, battle_cry=ic_cry, shield_wall=ic_shieldwall, charge=ic_charge, cleave=ic_cleave)
+              ground_slam=ic_slam, whirlwind=ic_whirl, battle_cry=ic_cry, shield_wall=ic_shieldwall, charge=ic_charge, cleave=ic_cleave,
+              shadow_strike=ic_shadow_strike, blade_flurry=ic_blade_flurry, phantom_lunge=ic_phantom_lunge, smoke_veil=ic_smoke_veil, throwing_knives=ic_throwing_knives, execution=ic_execution)
 for n, f in skills.items(): f().save(os.path.join(SKILL, n + ".png"))
 
 # contact sheet for a quick visual check (not shipped)
-sheet = Image.new("RGBA", (6*72, 4*72), (50,50,62,255)); i = 0
-for n, f in list(skills.items()) + [("c1", cls_wizard), ("c2", cls_archer), ("c3", cls_warrior)]:
+sheet = Image.new("RGBA", (6*72, 5*72), (50,50,62,255)); i = 0
+for n, f in list(skills.items()) + [("c1", cls_wizard), ("c2", cls_archer), ("c3", cls_warrior), ("c4", cls_assassin), ("c5", item_shadow_dagger)]:
     sheet.alpha_composite(f().resize((64,64), Image.NEAREST), ((i%6)*72+4, (i//6)*72+4)); i += 1
 sheet.save("/tmp/pc_icons.png")
 
@@ -257,6 +316,12 @@ SOUNDS["heal_chime"]= cat(arp([C6,E6,G6,C7], 0.07, sine, 0.5, 5), decay(sine(C7,
 SOUNDS["charge"]    = mix(bell(lp(noise(0.42), np.linspace(0.02, 0.5, int(SR*0.42))), 1.3)*1.2, bell(sweep(80, 240, 0.42, lambda p: 2*np.abs(2*((p/(2*math.pi)) % 1)-1)-1), 0.8)*0.5)
 SOUNDS["slash"]     = mix(decay(hp(lp(noise(0.2), np.linspace(0.9, 0.25, int(SR*0.2))), 0.05), 9)*1.2, decay(sweep(2400, 700, 0.18), 8)*0.25)
 SOUNDS["buff"]      = mix(cat(arp([C5,E5,G5], 0.08, tri, 0.5, 4), decay(tri(C6, 0.35)*0.5, 4)), cat(silence(0.2), decay(sine(G6, 0.3)*0.3, 5)))
+
+SOUNDS["vanish"]       = mix(bell(lp(noise(0.34), np.linspace(0.05, 0.3, int(SR*0.34))), 1.0)*0.9, decay(sweep(2400, 500, 0.3)*0.5, 5), cat(silence(0.08), arp([C7, G6, E6], 0.05, sine, 0.25, 6)))
+SOUNDS["shadow_step"]  = mix(decay(sweep(1500, 260, 0.2)*0.7, 6), decay(hp(noise(0.14), 0.35), 10)*0.6, cat(silence(0.1), decay(sine(2600, 0.2)*0.3, 8)), decay(sweep(140, 60, 0.18), 6)*0.5)
+SOUNDS["dagger_slash"] = mix(decay(hp(lp(noise(0.14), np.linspace(0.8, 0.35, int(SR*0.14))), 0.12), 9)*1.0, decay(sweep(3200, 1100, 0.12), 9)*0.3)
+SOUNDS["dagger_crit"]  = mix(decay(hp(lp(noise(0.2), np.linspace(0.9, 0.3, int(SR*0.2))), 0.1), 7)*1.0, decay(sine(1760, 0.5)*0.35, 5), decay(sine(2640, 0.5)*0.22, 6), decay(sweep(150, 50, 0.3), 6)*0.9)
+SOUNDS["knife_throw"]  = mix(bell(hp(noise(0.12), 0.2), 0.8)*0.8, decay(sweep(2200, 900, 0.1), 10)*0.35)
 for k, v in SOUNDS.items(): write(k, v)
 with open(os.path.join(ASSETS, "sounds.json"), "w", encoding="utf-8") as f:
     json.dump({k: {"sounds": [{"name": "pixelclasses:" + k, "stream": False}]} for k in SOUNDS}, f, indent=2)

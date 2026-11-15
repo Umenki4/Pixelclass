@@ -1,0 +1,179 @@
+{
+  "class": "pixelclasses:assassin",
+  "name": {
+    "en": "Phantom Lunge",
+    "th": "พุ่งเงา"
+  },
+  "description": {
+    "en": "Dash forward as a streak of shadow, cutting through anything in the way and ending with a double slash.",
+    "th": "พุ่งไปข้างหน้าเป็นเงาวูบ ตัดทุกอย่างที่ขวางทาง ปิดท้ายด้วยฟันไขว้"
+  },
+  "cooldown": 6.0,
+  "mana_cost": 18,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "dash",
+      "strength": 2.6,
+      "vertical": 0.05,
+      "sound": {
+        "id": "pixelclasses:whoosh",
+        "volume": 0.9,
+        "pitch": 1.3
+      },
+      "vfx": [
+        {
+          "particle": "dust_color_transition",
+          "color": "#5FE6FF",
+          "color_to": "#9A7BFF",
+          "size": 1.2,
+          "shape": "sphere",
+          "radius": 0.8,
+          "count": 24,
+          "speed": 0.05
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "burst",
+          "count": 12,
+          "speed": 0.3
+        }
+      ]
+    },
+    {
+      "type": "vfx",
+      "at": "caster",
+      "repeat": {
+        "count": 6,
+        "interval": 2
+      },
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#5FE6FF",
+          "size": 1.0,
+          "shape": "column",
+          "radius": 0.35,
+          "height": 1.9,
+          "count": 16
+        },
+        {
+          "particle": "dust",
+          "color": "#9A7BFF",
+          "size": 0.9,
+          "shape": "column",
+          "radius": 0.5,
+          "height": 1.9,
+          "count": 10
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "column",
+          "radius": 0.3,
+          "height": 1.8,
+          "count": 4
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "at": "caster",
+      "repeat": {
+        "count": 6,
+        "interval": 2
+      },
+      "radius": 2.2,
+      "damage": 3.4,
+      "damage_type": "physical",
+      "knockback": 0.25
+    },
+    {
+      "type": "area",
+      "at": "caster",
+      "direction": "caster",
+      "delay": 12,
+      "radius": 3.2,
+      "damage": 5,
+      "damage_type": "physical",
+      "knockback": 0.6,
+      "vfx": [
+        {
+          "particle": "dust",
+          "color": "#5FE6FF",
+          "size": 0.85,
+          "shape": "slash",
+          "angle": 160,
+          "count": 34,
+          "radius": 2.5,
+          "roll": 30,
+          "length": 1.3,
+          "y_offset": 1.1
+        },
+        {
+          "particle": "dust",
+          "color": "#E8F6FF",
+          "size": 0.6,
+          "shape": "slash",
+          "angle": 147.20000000000002,
+          "count": 26,
+          "radius": 2.5,
+          "roll": 30,
+          "length": 1.3,
+          "y_offset": 1.1
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "slash",
+          "angle": 160,
+          "count": 6,
+          "radius": 2.5,
+          "roll": 30,
+          "length": 1.3,
+          "y_offset": 1.1
+        },
+        {
+          "particle": "dust",
+          "color": "#5FE6FF",
+          "size": 0.85,
+          "shape": "slash",
+          "angle": 160,
+          "count": 34,
+          "radius": 2.5,
+          "roll": -30,
+          "length": 1.3,
+          "y_offset": 1.1
+        },
+        {
+          "particle": "dust",
+          "color": "#E8F6FF",
+          "size": 0.6,
+          "shape": "slash",
+          "angle": 147.20000000000002,
+          "count": 26,
+          "radius": 2.5,
+          "roll": -30,
+          "length": 1.3,
+          "y_offset": 1.1
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "slash",
+          "angle": 160,
+          "count": 6,
+          "radius": 2.5,
+          "roll": -30,
+          "length": 1.3,
+          "y_offset": 1.1
+        }
+      ],
+      "sound": {
+        "id": "pixelclasses:dagger_crit",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    }
+  ]
+}

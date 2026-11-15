@@ -139,6 +139,68 @@ S["cleave"] = skill("warrior", "Cleave", "ฟันกวาด", "A quick wide 
    "vfx": [pt("sweep_attack", "arc", radius=3.0, angle=150, count=8), dust("#FFFFFF", 1.3, "arc", radius=4, angle=150, count=34, speed=0.1), pt("enchanted_hit", "arc", radius=3.5, angle=150, count=12, speed=0.2)],
    "sound": snd("slash", 1.0)}])
 
+# ------------------------------------------------------------------ ASSASSIN (scales with DEX) - clean silver / cyan / violet
+def slashfx(roll, angle=140, radius=2.3):
+    """A crisp crescent slash streak (silver core + cyan edge + a few sparks). roll tilts it."""
+    common = dict(radius=radius, roll=roll, length=1.3, y_offset=1.1)
+    return [dust("#5FE6FF", 0.85, "slash", angle=angle, count=34, **common),
+            dust("#E8F6FF", 0.6, "slash", angle=angle * 0.92, count=26, **common),
+            pt("end_rod", "slash", angle=angle, count=6, **common)]
+def arrive(color="#5FE6FF"):
+    return [dtr(color, "#9A7BFF", 1.3, "sphere", radius=1.0, count=40, speed=0.05), dust("#E8F6FF", 1.0, "ring", radius=1.3, count=30, speed=0.2), pt("end_rod", "burst", count=16, speed=0.3)]
+
+acts = [
+  {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.0), "vfx": [dtr("#5FE6FF", "#9A7BFF", 1.3, "sphere", radius=1.0, count=44, speed=0.04), dust("#E8F6FF", 1.0, "ring", radius=1.3, count=30, speed=0.18), pt("end_rod", "burst", count=18, speed=0.3)]},
+  {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 1.6, 0), eff("speed", 1.6, 1)]},
+  {"type": "shadow_step", "delay": 3, "range": 14, "behind": 1.7, "fallback": 7, "sound": snd("shadow_step", 1.0), "arrival_sound": snd("shadow_step", 0.8, 1.3), "arrival_vfx": arrive()}]
+for i, r in enumerate([20, -35, 70, -60, 105, -15]):
+    acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 7 + 2 * i, "radius": 3.3, "damage": 2.7, "damage_type": "physical", "knockback": 0.1,
+                 "vfx": slashfx(r), "sound": snd("dagger_slash", 0.7, 1.0 + 0.05 * i)})
+acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 21, "radius": 3.6, "damage": 8, "damage_type": "physical", "knockback": 0.7,
+             "vfx": slashfx(45, 170, 2.8) + slashfx(-45, 170, 2.8) + [pt("end_rod", "burst", count=26, speed=0.4), dust("#E8F6FF", 1.1, "ring", radius=3.2, count=44, speed=0.3)],
+             "sound": snd("dagger_crit", 1.2)})
+S["shadow_strike"] = skill("assassin", "Shadow Strike", "หายตัวฟันรัว", "Vanish, reappear behind the enemy you are looking at, and carve them with a flurry of slashes ending in a heavy finisher.",
+  "หายตัวไปปรากฏด้านหลังศัตรูที่เล็งอยู่ แล้วฟันรัวต่อเนื่องปิดท้ายด้วยท่าฟันหนัก", 10.0, 30, "DEX", acts)
+
+acts = [{"type": "vfx", "at": "caster", "sound": snd("shadow_step", 0.8, 1.2), "vfx": [dust("#9A7BFF", 1.1, "spiral", radius=1.2, height=2.0, turns=3, count=34), pt("end_rod", "ring", radius=2, count=20, speed=0.1)]},
+        {"type": "area", "affect": "self", "radius": 0, "effects": [eff("speed", 2.5, 1)]}]
+for i, r in enumerate([0, 60, -60, 120, -120, 30, -30, 90, -90, 150]):
+    acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 2 + 2 * i, "radius": 3.4, "damage": 2.3, "damage_type": "physical", "knockback": 0.1,
+                 "vfx": slashfx(r, 150, 2.4), "sound": snd("dagger_slash", 0.6, 0.95 + 0.04 * (i % 5))})
+S["blade_flurry"] = skill("assassin", "Blade Flurry", "พายุใบมีด", "Spin in a storm of twin blades, slashing every enemy around you ten times in two seconds.",
+  "หมุนตัวเป็นพายุมีดคู่ ฟันศัตรูรอบตัว 10 ครั้งใน 2 วินาที", 9.0, 28, "DEX", acts)
+
+S["phantom_lunge"] = skill("assassin", "Phantom Lunge", "พุ่งเงา", "Dash forward as a streak of shadow, cutting through anything in the way and ending with a double slash.",
+  "พุ่งไปข้างหน้าเป็นเงาวูบ ตัดทุกอย่างที่ขวางทาง ปิดท้ายด้วยฟันไขว้", 6.0, 18, "DEX", [
+  {"type": "dash", "strength": 2.6, "vertical": 0.05, "sound": snd("whoosh", 0.9, 1.3), "vfx": [dtr("#5FE6FF", "#9A7BFF", 1.2, "sphere", radius=0.8, count=24, speed=0.05), pt("end_rod", "burst", count=12, speed=0.3)]},
+  {"type": "vfx", "at": "caster", "repeat": {"count": 6, "interval": 2}, "vfx": [dust("#5FE6FF", 1.0, "column", radius=0.35, height=1.9, count=16), dust("#9A7BFF", 0.9, "column", radius=0.5, height=1.9, count=10), pt("end_rod", "column", radius=0.3, height=1.8, count=4)]},
+  {"type": "area", "at": "caster", "repeat": {"count": 6, "interval": 2}, "radius": 2.2, "damage": 3.4, "damage_type": "physical", "knockback": 0.25},
+  {"type": "area", "at": "caster", "direction": "caster", "delay": 12, "radius": 3.2, "damage": 5, "damage_type": "physical", "knockback": 0.6,
+   "vfx": slashfx(30, 160, 2.5) + slashfx(-30, 160, 2.5), "sound": snd("dagger_crit", 1.0)}])
+
+S["smoke_veil"] = skill("assassin", "Smoke Veil", "ม่านควัน", "Throw down a smoke bomb: blind and slow nearby enemies while you turn invisible and speed away.",
+  "ปาระเบิดควัน ทำให้ศัตรูรอบๆ ตาบอดและช้าลง ขณะที่คุณล่องหนและวิ่งเร็วขึ้น", 16.0, 25, "DEX", [
+  {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.1, 0.9), "vfx": [pt("cloud", "sphere", radius=2.2, count=70, speed=0.02), dust("#C8D0E0", 1.5, "ring", radius=4.5, count=50, speed=0.12), dtr("#5FE6FF", "#9A7BFF", 1.2, "sphere", radius=1.6, count=40, speed=0.05), pt("end_rod", "burst", count=22, speed=0.35)]},
+  {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 5.0, 0), eff("speed", 5.0, 1)]},
+  {"type": "area", "affect": "enemies", "radius": 5, "damage": 0, "effects": [eff("blindness", 2.5, 0), eff("slowness", 2.0, 0)], "hit_vfx": [pt("cloud", "burst", count=8, speed=0.1)]}])
+
+S["throwing_knives"] = skill("assassin", "Throwing Knives", "ปามีดบิน", "Fling a fan of seven silver throwing knives at your target.",
+  "ปามีดเงิน 7 เล่มเป็นรูปพัดใส่เป้าหมาย", 5.0, 15, "DEX", [
+  {"type": "projectile", "at": "eye", "repeat": {"count": 7, "interval": 1}, "speed": 2.8, "range": 32, "hit_radius": 0.6, "spread": 7, "damage": 3.6, "damage_type": "projectile", "knockback": 0.1,
+   "sound": snd("knife_throw", 0.7), "trail": [dust("#E8F6FF", 0.7, count=2, spread=0.02), pt("end_rod", count=1, spread=0.02)],
+   "on_end": [{"type": "vfx", "vfx": [pt("end_rod", "burst", count=5, speed=0.15), dust("#5FE6FF", 0.9, "ring", radius=0.4, count=8, speed=0.05)]}]}])
+
+S["execution"] = skill("assassin", "Execution", "สังหาร", "Mark your prey, vanish, and strike from behind with a devastating cross-slash.",
+  "ล็อกเหยื่อ หายตัว แล้วฟันไขว้ทรงพลังจากด้านหลัง", 14.0, 35, "DEX", [
+  {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.0, 1.1), "vfx": [dtr("#FF5A7A", "#9A7BFF", 1.3, "sphere", radius=1.0, count=36, speed=0.05), pt("end_rod", "burst", count=16, speed=0.3)]},
+  {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 1.2, 0)]},
+  {"type": "shadow_step", "delay": 3, "range": 12, "behind": 1.5, "fallback": 0, "sound": snd("shadow_step", 1.0, 0.9), "arrival_sound": snd("shadow_step", 0.8, 1.2),
+   "arrival_vfx": [dust("#FF5A7A", 1.2, "ring", radius=1.3, count=30, speed=0.2), pt("end_rod", "burst", count=16, speed=0.3)]},
+  {"type": "area", "at": "caster", "direction": "caster", "delay": 9, "radius": 3.0, "damage": 20, "damage_type": "physical", "knockback": 0.4,
+   "vfx": slashfx(45, 170, 2.8) + slashfx(-45, 170, 2.8) + [dust("#FF5A7A", 1.2, "ring", radius=3.0, count=44, speed=0.3), pt("end_rod", "burst", count=30, speed=0.45), pt("crit", "burst", count=20, speed=0.5)],
+   "sound": snd("dagger_crit", 1.4)}])
+
+
 CLASSES = {
  "wizard": {"name": {"en": "Wizard", "th": "นักเวท"}, "color": "#9B6BFF",
    "description": {"en": "A fragile master of the arcane. Devastating spells from a distance, but very little protection.",
@@ -160,6 +222,14 @@ CLASSES = {
                   {"attribute": "minecraft:generic.armor", "amount": 2.0, "operation": "addition"},
                   {"attribute": "minecraft:generic.knockback_resistance", "amount": 0.2, "operation": "addition"}],
    "skills": ["ground_slam", "whirlwind", "battle_cry", "shield_wall", "charge", "cleave"]},
+ "assassin": {"name": {"en": "Assassin", "th": "นักฆ่า"}, "color": "#5FE6FF",
+   "description": {"en": "A fast, fragile dual-dagger killer. Vanishes, strikes from behind and cuts targets down in a blur of slashes.",
+                   "th": "นักฆ่ามีดคู่ว่องไว ตัวบาง หายตัวไปฟันจากด้านหลังและรัวใบมีดจนศัตรูล้มในพริบตา"},
+   "mana": {"name": {"en": "Shadow", "th": "พลังเงา"}, "color": "#9A7BFF", "max": 100, "regen": 7.0},
+   "attributes": [{"attribute": "minecraft:generic.movement_speed", "amount": 0.12, "operation": "multiply_base"},
+                  {"attribute": "minecraft:generic.attack_speed", "amount": 0.2, "operation": "multiply_base"},
+                  {"attribute": "minecraft:generic.max_health", "amount": -2.0, "operation": "addition"}],
+   "skills": ["shadow_strike", "blade_flurry", "phantom_lunge", "throwing_knives", "smoke_veil", "execution"]},
 }
 def dump(path, obj):
     os.makedirs(os.path.dirname(path), exist_ok=True)

@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 /**
  * One building block of a skill. Every action type supports these common JSON fields:
  *   delay (ticks), repeat {count, interval}, scatter, y_offset, at (context|caster|eye|aim), aim_range,
- *   direction (look|flat|down|up), vfx [..], sound {..}
+ *   direction (look|caster|flat|down|up), vfx [..], sound {..}
  */
 public abstract class SkillAction {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -74,7 +74,7 @@ public abstract class SkillAction {
             if (caster == null || !caster.isAlive()) {
                 return;
             }
-            SkillContext local = ctx.at(resolvePos(ctx, caster), resolveDir(ctx));
+            SkillContext local = ctx.at(resolvePos(ctx, caster), resolveDir(ctx, caster));
             playEffects(local, caster);
             execute(local, caster);
         } catch (Exception ex) {
@@ -98,8 +98,9 @@ public abstract class SkillAction {
         return p.add(0, yOffset, 0);
     }
 
-    private Vec3 resolveDir(SkillContext ctx) {
+    private Vec3 resolveDir(SkillContext ctx, ServerPlayer caster) {
         return switch (direction) {
+            case "caster" -> caster.getLookAngle();
             case "down" -> new Vec3(0, -1, 0);
             case "up" -> new Vec3(0, 1, 0);
             case "flat" -> {

@@ -1,0 +1,105 @@
+{
+  "class": "pixelclasses:assassin",
+  "name": {
+    "en": "Smoke Veil",
+    "th": "ม่านควัน"
+  },
+  "description": {
+    "en": "Throw down a smoke bomb: blind and slow nearby enemies while you turn invisible and speed away.",
+    "th": "ปาระเบิดควัน ทำให้ศัตรูรอบๆ ตาบอดและช้าลง ขณะที่คุณล่องหนและวิ่งเร็วขึ้น"
+  },
+  "cooldown": 16.0,
+  "mana_cost": 25,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "vfx",
+      "at": "caster",
+      "sound": {
+        "id": "pixelclasses:vanish",
+        "volume": 1.1,
+        "pitch": 0.9
+      },
+      "vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "sphere",
+          "radius": 2.2,
+          "count": 70,
+          "speed": 0.02
+        },
+        {
+          "particle": "dust",
+          "color": "#C8D0E0",
+          "size": 1.5,
+          "shape": "ring",
+          "radius": 4.5,
+          "count": 50,
+          "speed": 0.12
+        },
+        {
+          "particle": "dust_color_transition",
+          "color": "#5FE6FF",
+          "color_to": "#9A7BFF",
+          "size": 1.2,
+          "shape": "sphere",
+          "radius": 1.6,
+          "count": 40,
+          "speed": 0.05
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "burst",
+          "count": 22,
+          "speed": 0.35
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "self",
+      "radius": 0,
+      "effects": [
+        {
+          "effect": "minecraft:invisibility",
+          "duration": 5.0,
+          "amplifier": 0
+        },
+        {
+          "effect": "minecraft:speed",
+          "duration": 5.0,
+          "amplifier": 1
+        }
+      ]
+    },
+    {
+      "type": "area",
+      "affect": "enemies",
+      "radius": 5,
+      "damage": 0,
+      "effects": [
+        {
+          "effect": "minecraft:blindness",
+          "duration": 2.5,
+          "amplifier": 0
+        },
+        {
+          "effect": "minecraft:slowness",
+          "duration": 2.0,
+          "amplifier": 0
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "minecraft:cloud",
+          "shape": "burst",
+          "count": 8,
+          "speed": 0.1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": {
+    "en": "Assassin",
+    "th": "นักฆ่า"
+  },
+  "color": "#5FE6FF",
+  "description": {
+    "en": "A fast, fragile dual-dagger killer. Vanishes, strikes from behind and cuts targets down in a blur of slashes.",
+    "th": "นักฆ่ามีดคู่ว่องไว ตัวบาง หายตัวไปฟันจากด้านหลังและรัวใบมีดจนศัตรูล้มในพริบตา"
+  },
+  "mana": {
+    "name": {
+      "en": "Shadow",
+      "th": "พลังเงา"
+    },
+    "color": "#9A7BFF",
+    "max": 100,
+    "regen": 7.0
+  },
+  "attributes": [
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 0.12,
+      "operation": "multiply_base"
+    },
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "amount": 0.2,
+      "operation": "multiply_base"
+    },
+    {
+      "attribute": "minecraft:generic.max_health",
+      "amount": -2.0,
+      "operation": "addition"
+    }
+  ],
+  "skills": [
+    "pixelclasses:shadow_strike",
+    "pixelclasses:blade_flurry",
+    "pixelclasses:phantom_lunge",
+    "pixelclasses:throwing_knives",
+    "pixelclasses:smoke_veil",
+    "pixelclasses:execution"
+  ],
+  "icon": "pixelclasses:textures/class/assassin.png"
+}

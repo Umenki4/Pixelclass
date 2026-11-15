@@ -14,7 +14,8 @@ public final class ModSounds {
     public static final String[] NAMES = {
             "ui_open", "ui_close", "ui_hover", "ui_click", "ui_select", "ui_equip", "ui_deny",
             "cast_fire", "boom", "cast_ice", "ice_break", "cast_arcane", "zap", "blink",
-            "arrow_shot", "arrow_hit", "whoosh", "slam", "warcry", "shield", "heal_chime", "charge", "slash", "buff"
+            "arrow_shot", "arrow_hit", "whoosh", "slam", "warcry", "shield", "heal_chime", "charge", "slash", "buff",
+            "vanish", "shadow_step", "dagger_slash", "dagger_crit", "knife_throw"
     };
 
     public static final DeferredRegister<SoundEvent> SOUNDS =

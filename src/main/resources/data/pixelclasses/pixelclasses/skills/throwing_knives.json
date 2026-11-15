@@ -1,0 +1,77 @@
+{
+  "class": "pixelclasses:assassin",
+  "name": {
+    "en": "Throwing Knives",
+    "th": "ปามีดบิน"
+  },
+  "description": {
+    "en": "Fling a fan of seven silver throwing knives at your target.",
+    "th": "ปามีดเงิน 7 เล่มเป็นรูปพัดใส่เป้าหมาย"
+  },
+  "cooldown": 5.0,
+  "mana_cost": 15,
+  "scaling": {
+    "stat": "DEX",
+    "per_point": 0.01
+  },
+  "actions": [
+    {
+      "type": "projectile",
+      "at": "eye",
+      "repeat": {
+        "count": 7,
+        "interval": 1
+      },
+      "speed": 2.8,
+      "range": 32,
+      "hit_radius": 0.6,
+      "spread": 7,
+      "damage": 3.6,
+      "damage_type": "projectile",
+      "knockback": 0.1,
+      "sound": {
+        "id": "pixelclasses:knife_throw",
+        "volume": 0.7,
+        "pitch": 1.0
+      },
+      "trail": [
+        {
+          "particle": "dust",
+          "color": "#E8F6FF",
+          "size": 0.7,
+          "shape": "point",
+          "count": 2,
+          "spread": 0.02
+        },
+        {
+          "particle": "minecraft:end_rod",
+          "shape": "point",
+          "count": 1,
+          "spread": 0.02
+        }
+      ],
+      "on_end": [
+        {
+          "type": "vfx",
+          "vfx": [
+            {
+              "particle": "minecraft:end_rod",
+              "shape": "burst",
+              "count": 5,
+              "speed": 0.15
+            },
+            {
+              "particle": "dust",
+              "color": "#5FE6FF",
+              "size": 0.9,
+              "shape": "ring",
+              "radius": 0.4,
+              "count": 8,
+              "speed": 0.05
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

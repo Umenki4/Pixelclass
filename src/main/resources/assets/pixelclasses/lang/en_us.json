@@ -23,5 +23,6 @@
   "screen.pixelclasses.tt_cost": "Cost: %s",
   "screen.pixelclasses.tt_scales": "Scales with %s (Pixel Stats): +%s per point",
   "message.pixelclasses.no_mana": "Not enough mana!",
-  "message.pixelclasses.change_locked": "You cannot change your class on this server."
+  "message.pixelclasses.change_locked": "You cannot change your class on this server.",
+  "item.pixelclasses.shadow_dagger": "Shadow Dagger"
 }

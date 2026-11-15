@@ -20,8 +20,9 @@ public final class Actions {
             case "dash" -> DashAction.parse(o);
             case "blink" -> BlinkAction.parse(o);
             case "taunt" -> TauntAction.parse(o);
+            case "shadow_step" -> ShadowStepAction.parse(o);
             case "vfx" -> new VfxAction();
-            default -> throw new JsonSyntaxException("Unknown action type '" + type + "' (area, projectile, dash, blink, taunt, vfx)");
+            default -> throw new JsonSyntaxException("Unknown action type '" + type + "' (area, projectile, dash, blink, shadow_step, taunt, vfx)");
         };
         action.readCommon(o);
         return action;

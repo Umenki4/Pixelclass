@@ -31,6 +31,21 @@ public final class BlinkAction extends SkillAction {
 
     @Override
     protected void execute(SkillContext ctx, ServerPlayer caster) {
+        Vec3 arrived = teleportAlongLook(caster, distance);
+        if (arrived == null) {
+            return;
+        }
+        ServerLevel level = caster.serverLevel();
+        if (!arrivalVfx.isEmpty()) {
+            ModNetwork.sendVfx(level, arrived.add(0, 0.2, 0), caster.getLookAngle(), arrivalVfx);
+        }
+        for (SoundSpec s : arrivalSound) {
+            s.play(level, arrived);
+        }
+    }
+
+    /** Teleports the caster up to {@code distance} blocks along their look direction. Returns the new position or null. */
+    static Vec3 teleportAlongLook(ServerPlayer caster, double distance) {
         ServerLevel level = caster.serverLevel();
         Vec3 look = caster.getLookAngle();
         Vec3 eye = caster.getEyePosition();
@@ -51,16 +66,11 @@ public final class BlinkAction extends SkillAction {
             feet = back.lengthSqr() < 0.25 ? start : feet.add(back.normalize().scale(0.4));
         }
         if (!ok || feet.distanceToSqr(start) < 0.25) {
-            return;
+            return null;
         }
         caster.connection.teleport(feet.x, feet.y, feet.z, caster.getYRot(), caster.getXRot());
         caster.fallDistance = 0.0F;
         caster.setDeltaMovement(Vec3.ZERO);
-        if (!arrivalVfx.isEmpty()) {
-            ModNetwork.sendVfx(level, feet.add(0, 0.2, 0), look, arrivalVfx);
-        }
-        for (SoundSpec s : arrivalSound) {
-            s.play(level, feet);
-        }
+        return feet;
     }
 }

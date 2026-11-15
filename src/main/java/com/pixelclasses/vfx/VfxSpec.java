@@ -34,6 +34,7 @@ public final class VfxSpec {
     public final float turns;
     public final float yOffset;
     public final float angle;
+    public final float roll;
     public final float length;
     public final float speed;
     public final float sx;
@@ -45,7 +46,7 @@ public final class VfxSpec {
     private boolean resolved;
 
     public VfxSpec(String particle, int color, int color2, float size, String shape, float radius, float height, float turns,
-                   float yOffset, float angle, float length, float speed, float sx, float sy, float sz, int count) {
+                   float yOffset, float angle, float roll, float length, float speed, float sx, float sy, float sz, int count) {
         this.particle = particle;
         this.color = color;
         this.color2 = color2;
@@ -56,6 +57,7 @@ public final class VfxSpec {
         this.turns = turns;
         this.yOffset = yOffset;
         this.angle = angle;
+        this.roll = roll;
         this.length = length;
         this.speed = speed;
         this.sx = sx;
@@ -86,7 +88,7 @@ public final class VfxSpec {
                 (float) GsonHelper.getAsDouble(o, "size", 1.0), GsonHelper.getAsString(o, "shape", "point"),
                 (float) GsonHelper.getAsDouble(o, "radius", 1.0), (float) GsonHelper.getAsDouble(o, "height", 2.0),
                 (float) GsonHelper.getAsDouble(o, "turns", 2.0), (float) GsonHelper.getAsDouble(o, "y_offset", 0.0),
-                (float) GsonHelper.getAsDouble(o, "angle", 120.0), (float) GsonHelper.getAsDouble(o, "length", 8.0),
+                (float) GsonHelper.getAsDouble(o, "angle", 120.0), (float) GsonHelper.getAsDouble(o, "roll", 0.0), (float) GsonHelper.getAsDouble(o, "length", 8.0),
                 (float) GsonHelper.getAsDouble(o, "speed", 0.0), sx, sy, sz,
                 Math.max(1, Math.min(400, GsonHelper.getAsInt(o, "count", 10))));
     }
@@ -117,6 +119,7 @@ public final class VfxSpec {
         b.writeFloat(turns);
         b.writeFloat(yOffset);
         b.writeFloat(angle);
+        b.writeFloat(roll);
         b.writeFloat(length);
         b.writeFloat(speed);
         b.writeFloat(sx);
@@ -127,7 +130,7 @@ public final class VfxSpec {
 
     public static VfxSpec read(FriendlyByteBuf b) {
         return new VfxSpec(b.readUtf(128), b.readInt(), b.readInt(), b.readFloat(), b.readUtf(32),
-                b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(),
+                b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat(),
                 b.readFloat(), b.readFloat(), b.readFloat(), Math.max(1, Math.min(400, b.readVarInt())));
     }
 

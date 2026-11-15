@@ -105,6 +105,18 @@ jobs:
 | **พุ่งชน** (Charge) | 9.0 วิ | 20 | พุ่งไปข้างหน้าด้วยความเร็วสูง ชนศัตรูที่ขวางทางกระเด็น |
 | **ฟันกวาด** (Cleave) | 3.5 วิ | 10 | ฟันกวาดกว้างอย่างรวดเร็ว โดนศัตรูทุกตัวด้านหน้า |
 
+### นักฆ่า (Assassin) — นักฆ่ามีดคู่ว่องไว ตัวบาง หายตัวไปฟันจากด้านหลังและรัวใบมีดจนศัตรูล้มในพริบตา
+ทรัพยากร: **พลังเงา** สูงสุด 100 ฟื้น 7.0/วินาที · แรงขึ้นตามสเตตัส Pixel Stats สาย **DEX**
+
+| สกิล | คูลดาวน์ | ใช้ | ทำอะไร |
+|---|---|---|---|
+| **หายตัวฟันรัว** (Shadow Strike) | 10.0 วิ | 30 | หายตัวไปปรากฏด้านหลังศัตรูที่เล็งอยู่ แล้วฟันรัวต่อเนื่องปิดท้ายด้วยท่าฟันหนัก |
+| **พายุใบมีด** (Blade Flurry) | 9.0 วิ | 28 | หมุนตัวเป็นพายุมีดคู่ ฟันศัตรูรอบตัว 10 ครั้งใน 2 วินาที |
+| **พุ่งเงา** (Phantom Lunge) | 6.0 วิ | 18 | พุ่งไปข้างหน้าเป็นเงาวูบ ตัดทุกอย่างที่ขวางทาง ปิดท้ายด้วยฟันไขว้ |
+| **ปามีดบิน** (Throwing Knives) | 5.0 วิ | 15 | ปามีดเงิน 7 เล่มเป็นรูปพัดใส่เป้าหมาย |
+| **ม่านควัน** (Smoke Veil) | 16.0 วิ | 25 | ปาระเบิดควัน ทำให้ศัตรูรอบๆ ตาบอดและช้าลง ขณะที่คุณล่องหนและวิ่งเร็วขึ้น |
+| **สังหาร** (Execution) | 14.0 วิ | 35 | ล็อกเหยื่อ หายตัว แล้วฟันไขว้ทรงพลังจากด้านหลัง |
+
 (ค่าในตารางคือค่าเริ่มต้นจากไฟล์ JSON — ถ้าคุณแก้ไฟล์ ตัวเลขในเกมจะเปลี่ยนตาม)
 
 ---
@@ -141,7 +153,7 @@ jobs:
 ### ตัวอ้างอิงฟิลด์
 **ไฟล์สกิล:** `class`, `name`, `description` (ข้อความธรรมดา หรือ `{"en": "..", "th": ".."}`), `icon` (ไม่ใส่ = `textures/skill/<ชื่อ>.png`), `cooldown` (วินาที), `mana_cost`, `scaling`, `actions` (ทำเรียงตามลำดับ)
 
-**ฟิลด์ที่ใช้ได้กับทุก action:** `type`, `delay` (tick, 20 = 1 วินาที), `repeat` {`count`, `interval`}, `scatter` (สุ่มกระจายรัศมี), `y_offset`, `at` (`context`/`caster`/`eye`/`aim`), `aim_range`, `direction` (`look`/`flat`/`down`/`up`), `vfx` [..], `sound` {`id`, `volume`, `pitch`}
+**ฟิลด์ที่ใช้ได้กับทุก action:** `type`, `delay` (tick, 20 = 1 วินาที), `repeat` {`count`, `interval`}, `scatter` (สุ่มกระจายรัศมี), `y_offset`, `at` (`context`/`caster`/`eye`/`aim`), `aim_range`, `direction` (`look`/`caster` = ทิศที่ผู้ร่ายหันอยู่ตอนนี้ (ใช้หลังวาร์ป)/`flat`/`down`/`up`), `vfx` [..], `sound` {`id`, `volume`, `pitch`}
 
 | `type` | ฟิลด์เฉพาะ |
 |---|---|
@@ -149,19 +161,21 @@ jobs:
 | `projectile` | `speed`, `range`, `hit_radius`, `pierce`, `ignore_blocks`, `gravity`, `spread`, `damage`, `damage_type`, `knockback`, `ignite`, `effects`, `affect`, `trail`, `on_hit` [actions], `on_end` [actions] |
 | `dash` | `strength`, `vertical`, `backward` |
 | `blink` | `distance`, `arrival_vfx`, `arrival_sound` |
+| `shadow_step` | หายตัวไปด้านหลังศัตรูที่เล็งอยู่: `range`, `behind`, `fallback` (ไม่เจอศัตรูให้วาร์ปไปข้างหน้ากี่บล็อก 0 = อยู่เฉย), `arrival_vfx`, `arrival_sound` |
 | `taunt` | `radius` |
 | `vfx` | (เล่นแค่ `vfx` + `sound`) |
 
-**`vfx`:** `particle` (เช่น `minecraft:flame`, `dust`, `dust_color_transition`), `shape` (`point`/`sphere`/`ring`/`disc`/`line`/`spiral`/`column`/`burst`/`arc`/`cone`), `count` (≤ 400), `radius`, `height`, `turns`, `angle`, `length`, `speed`, `spread`, `color` (`#RRGGBB`), `color_to`, `size`, `y_offset`
+**`vfx`:** `particle` (เช่น `minecraft:flame`, `dust`, `dust_color_transition`), `shape` (`point`/`sphere`/`ring`/`disc`/`line`/`spiral`/`column`/`burst`/`arc`/`cone`/`slash`), `count` (≤ 400), `radius`, `height`, `turns`, `angle`, `roll` (องศาเอียงของ `slash`: 0 = ยิ้ม, 90 = แนวตั้ง, ±45 = เฉียง), `length`, `speed`, `spread`, `color` (`#RRGGBB`), `color_to`, `size`, `y_offset`
 **`effects`:** `{"effect": "minecraft:slowness", "duration": 4.0, "amplifier": 1}`
-**เสียงของม็อด:** `pixelclasses:` + `cast_fire` `boom` `cast_ice` `ice_break` `cast_arcane` `zap` `blink` `arrow_shot` `arrow_hit` `whoosh` `slam` `warcry` `shield` `heal_chime` `charge` `slash` `buff` — หรือเสียงของ Minecraft/ม็อดอื่นก็ได้ เช่น `minecraft:entity.generic.explode`
+**เสียงของม็อด:** `pixelclasses:` + `cast_fire` `boom` `cast_ice` `ice_break` `cast_arcane` `zap` `blink` `arrow_shot` `arrow_hit` `whoosh` `slam` `warcry` `shield` `heal_chime` `charge` `slash` `buff` `vanish` `shadow_step` `dagger_slash` `dagger_crit` `knife_throw` — หรือเสียงของ Minecraft/ม็อดอื่นก็ได้ เช่น `minecraft:entity.generic.explode`
 
 ---
 ## 5) ความปลอดภัย / ข้อจำกัด
 - โปรเจกไทล์เป็น "อนุภาคล้วน" ไม่มี entity ใหม่/โมเดลใหม่ จึงไม่ทำให้เรนเดอร์พัง · มีเพดานจำนวนเอฟเฟกต์ที่รอทำงานต่อผู้เล่น/เป้าหมายต่อสกิล/จำนวนอนุภาคต่อเอฟเฟกต์
 - เซิร์ฟเวอร์ตัดสินทุกอย่าง (มานา, คูลดาวน์, ดาเมจ) · ไคลเอนต์แค่ขอ จึงโกงด้วยแพ็กเก็ตปลอมไม่ได้
 - ม็อดนี้มีระบบมานา/พลังงานของตัวเอง **แยกจาก** Iron's Spells · Epic Fight/Origins/Apotheosis/Relics ใช้ร่วมได้ตามปกติ (สกิลทำดาเมจเหมือนผู้เล่นโจมตี) แต่ยังไม่ได้ผูกโค้ดเชื่อมกันโดยตรง
-- Bard (ฮีล/บัพ) และ Assassin ยังไม่รวมในรอบแรก — เพิ่มได้ด้วยไฟล์ JSON (มี action `area` แบบ `heal`/`effects` และ `dash`/`blink` รองรับไว้แล้ว)
+- Bard (ฮีล/บัพ) ยังไม่มี — เพิ่มได้ด้วยไฟล์ JSON (action `area` แบบ `heal`/`effects` รองรับไว้แล้ว)
+- **มีดเงา (Shadow Dagger)**: ไอเท็มมีดเร็วสำหรับ Assassin ได้จาก `/give @s pixelclasses:shadow_dagger 2` หรือในแท็บ Combat ของ Creative (ถือมือละเล่ม — มือซ้ายถือเพื่อความสวยเท่านั้น โจมตีด้วยมือขวา)
 
 ## 6) โครงสร้างโปรเจกต์
 ```

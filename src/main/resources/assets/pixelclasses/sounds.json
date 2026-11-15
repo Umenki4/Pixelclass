@@ -190,5 +190,45 @@
         "stream": false
       }
     ]
+  },
+  "vanish": {
+    "sounds": [
+      {
+        "name": "pixelclasses:vanish",
+        "stream": false
+      }
+    ]
+  },
+  "shadow_step": {
+    "sounds": [
+      {
+        "name": "pixelclasses:shadow_step",
+        "stream": false
+      }
+    ]
+  },
+  "dagger_slash": {
+    "sounds": [
+      {
+        "name": "pixelclasses:dagger_slash",
+        "stream": false
+      }
+    ]
+  },
+  "dagger_crit": {
+    "sounds": [
+      {
+        "name": "pixelclasses:dagger_crit",
+        "stream": false
+      }
+    ]
+  },
+  "knife_throw": {
+    "sounds": [
+      {
+        "name": "pixelclasses:knife_throw",
+        "stream": false
+      }
+    ]
   }
 }

@@ -22,5 +22,6 @@
   "screen.pixelclasses.tt_cost": "ใช้: %s",
   "screen.pixelclasses.tt_scales": "แรงขึ้นตาม %s (Pixel Stats): +%s ต่อแต้ม",
   "message.pixelclasses.no_mana": "มานาไม่พอ!",
-  "message.pixelclasses.change_locked": "เซิร์ฟเวอร์นี้ไม่อนุญาตให้เปลี่ยนคลาส"
+  "message.pixelclasses.change_locked": "เซิร์ฟเวอร์นี้ไม่อนุญาตให้เปลี่ยนคลาส",
+  "item.pixelclasses.shadow_dagger": "มีดเงา"
 }
