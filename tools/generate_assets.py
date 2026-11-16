@@ -187,7 +187,7 @@ def logo():
 
 
 # ---- Assassin set (clean silver / cyan / violet)
-P.update(sl=(232,246,255,255), cy=(95,230,255,255), vi=(154,123,255,255), dvi=(80,56,170,255), nv=(34,40,70,255), dk=(24,28,48,255), rd2=(255,70,90,255))
+P.update(sl=(240,236,255,255), cy=(205,170,255,255), vi=(150,100,255,255), dvi=(84,52,190,255), nv=(34,26,60,255), dk=(20,14,36,255), rd2=(215,100,255,255))
 def dagger(d, x0, y0, x1, y1, w=2):
     d.line([(x0,y0),(x1,y1)], fill=P['sl'], width=w)
     d.line([(x0,y0),(x1,y1)], fill=P['cy'], width=1)
@@ -240,13 +240,38 @@ def item_shadow_dagger():
     d.point((2,13), fill=P['cy']); d.point((12,3), fill=P['sl'])
     return outline(im)
 
+# ---- 3D dagger model (voxel steps like the concept art). Flat colours come from a tiny palette texture.
+PALETTE = ["silver", "silver_mid", "silver_dark", "white", "black", "deep", "purple", "bright", "ring"]
+PAL_RGB = [(226,230,246),(170,176,200),(110,114,142),(255,255,255),(24,18,38),(56,36,96),(140,92,255),(196,160,255),(214,214,226)]
+def dagger_model():
+    pal = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for i, c in enumerate(PAL_RGB): pal.putpixel((i, 0), c + (255,))
+    pal.save(os.path.join(ITEM, "dagger_palette.png"))
+    def face(name): i = PALETTE.index(name); return {"uv": [i, 0, i + 1, 1], "texture": "#p"}
+    def box(x0, y0, z0, x1, y1, z1, up, down, ns, east, west):
+        return {"from": [x0, y0, z0], "to": [x1, y1, z1], "rotation": {"angle": -45, "axis": "z", "origin": [8, 8, 8]},
+                "faces": {"north": face(ns), "south": face(ns), "east": face(east), "west": face(west), "up": face(up), "down": face(down)}}
+    el = [box(7, 0, 7, 9, 1.5, 9, "bright", "purple", "purple", "deep", "bright"),                      # pommel
+          box(7.3, 1.5, 7.3, 8.7, 5, 8.7, "black", "black", "black", "deep", "black"),                  # grip
+          box(7, 2.4, 7, 9, 3.0, 9, "ring", "ring", "ring", "silver_dark", "ring"),                      # silver ring on the grip
+          box(5.4, 5, 7.2, 10.6, 6, 8.8, "bright", "deep", "purple", "deep", "bright"),                 # cross guard
+          box(4.8, 5, 7.6, 5.4, 6.8, 8.4, "white", "purple", "bright", "purple", "bright"),             # guard prongs
+          box(10.6, 5, 7.6, 11.2, 6.8, 8.4, "white", "purple", "bright", "bright", "purple"),
+          box(7, 6, 7.3, 9, 6.6, 8.7, "purple", "deep", "purple", "deep", "bright")]                      # purple band at the blade base
+    steps = [(6.6, 8, 2.4, 1.1, "silver_dark"), (8, 10, 2.0, 1.0, "silver_mid"), (10, 12, 1.6, 0.9, "silver_mid"), (12, 14, 1.1, 0.8, "silver"), (14, 15.5, 0.6, 0.6, "white")]
+    for y0, y1, w, t, tone in steps:
+        el.append(box(8 - w / 2, y0, 8 - t / 2, 8 + w / 2, y1, 8 + t / 2, "white", "silver_dark", tone, "silver_dark", "silver"))
+    el.append(box(7.75, 15.5, 7.7, 8.25, 16.6, 8.3, "white", "silver", "white", "silver", "white"))      # tip
+    return {"parent": "minecraft:item/handheld", "gui_light": "side",
+            "textures": {"p": "pixelclasses:item/dagger_palette", "particle": "pixelclasses:item/dagger_palette"}, "elements": el}
+
 ui = {"panel": panel(), "row": row(), "row_hover": row(True), "banner": banner(), "slot": slot()}
 for n, im in ui.items(): im.save(os.path.join(GUI, n + ".png"))
 logo().save(os.path.join(ASSETS, "..", "..", "logo.png"))
 for n, f in (("wizard", cls_wizard), ("archer", cls_archer), ("warrior", cls_warrior), ("assassin", cls_assassin)): f().save(os.path.join(CLASS, n + ".png"))
 ITEM = os.path.join(ASSETS, "textures", "item"); os.makedirs(ITEM, exist_ok=True); item_shadow_dagger().save(os.path.join(ITEM, "shadow_dagger.png"))
 MODELS = os.path.join(ASSETS, "models", "item"); os.makedirs(MODELS, exist_ok=True)
-json.dump({"parent": "minecraft:item/handheld", "textures": {"layer0": "pixelclasses:item/shadow_dagger"}}, open(os.path.join(MODELS, "shadow_dagger.json"), "w"), indent=2)
+json.dump(dagger_model(), open(os.path.join(MODELS, "shadow_dagger.json"), "w"), indent=2)
 skills = dict(fireball=ic_fireball, frost_nova=ic_frost, arcane_beam=ic_beam, meteor=ic_meteor, blink=ic_blink, arcane_barrier=ic_barrier,
               rapid_shot=ic_rapid, piercing_arrow=ic_pierce, arrow_rain=ic_rain, hunters_focus=ic_focus, poison_trap=ic_poison, evasive_roll=ic_roll,
               ground_slam=ic_slam, whirlwind=ic_whirl, battle_cry=ic_cry, shield_wall=ic_shieldwall, charge=ic_charge, cleave=ic_cleave,

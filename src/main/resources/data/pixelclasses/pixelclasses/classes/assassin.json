@@ -3,7 +3,7 @@
     "en": "Assassin",
     "th": "นักฆ่า"
   },
-  "color": "#5FE6FF",
+  "color": "#B070FF",
   "description": {
     "en": "A fast, fragile dual-dagger killer. Vanishes, strikes from behind and cuts targets down in a blur of slashes.",
     "th": "นักฆ่ามีดคู่ว่องไว ตัวบาง หายตัวไปฟันจากด้านหลังและรัวใบมีดจนศัตรูล้มในพริบตา"
@@ -13,7 +13,7 @@
       "en": "Shadow",
       "th": "พลังเงา"
     },
-    "color": "#9A7BFF",
+    "color": "#7A4CFF",
     "max": 100,
     "regen": 7.0
   },

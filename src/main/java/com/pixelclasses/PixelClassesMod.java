@@ -4,6 +4,7 @@ import com.pixelclasses.config.ClassConfig;
 import com.pixelclasses.network.ModNetwork;
 import com.pixelclasses.player.ClassData;
 import com.pixelclasses.registry.ModItems;
+import com.pixelclasses.registry.ModParticles;
 import com.pixelclasses.registry.ModSounds;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -24,6 +25,7 @@ public class PixelClassesMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModSounds.SOUNDS.register(modBus);
         ModItems.ITEMS.register(modBus);
+        ModParticles.PARTICLES.register(modBus);
         modBus.addListener(this::buildCreativeTabs);
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::registerCapabilities);

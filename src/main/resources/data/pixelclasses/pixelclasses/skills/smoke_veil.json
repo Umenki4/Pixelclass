@@ -28,33 +28,41 @@
           "particle": "minecraft:cloud",
           "shape": "sphere",
           "radius": 2.2,
-          "count": 70,
-          "speed": 0.02
+          "count": 60,
+          "speed": 0.02,
+          "y_offset": 1.0
         },
         {
           "particle": "dust",
-          "color": "#C8D0E0",
+          "color": "#8A78B8",
           "size": 1.5,
           "shape": "ring",
           "radius": 4.5,
           "count": 50,
-          "speed": 0.12
+          "speed": 0.12,
+          "y_offset": 0.3
         },
         {
-          "particle": "dust_color_transition",
-          "color": "#5FE6FF",
-          "color_to": "#9A7BFF",
-          "size": 1.2,
-          "shape": "sphere",
-          "radius": 1.6,
-          "count": 40,
-          "speed": 0.05
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 2.2,
+          "length": 0.0,
+          "y_offset": 0.4
         },
         {
-          "particle": "minecraft:end_rod",
+          "particle": "pixelclasses:sparkle",
           "shape": "burst",
           "count": 22,
-          "speed": 0.35
+          "speed": 0.35,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:shard",
+          "shape": "burst",
+          "count": 12,
+          "speed": 0.3,
+          "y_offset": 1.0
         }
       ]
     },

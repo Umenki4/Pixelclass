@@ -1,5 +1,6 @@
 package com.pixelclasses.client;
 
+import com.pixelclasses.client.fx.FxParams;
 import com.pixelclasses.vfx.VfxSpec;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -19,8 +20,19 @@ public final class VfxRenderer {
         }
         for (VfxSpec spec : specs) {
             ParticleOptions options = spec.options();
-            if (options != null) {
+            if (options == null) {
+                continue;
+            }
+            boolean custom = spec.particle.startsWith("pixelclasses:");
+            if (custom) {
+                FxParams.set(spec.size, spec.roll, spec.color);   // size / roll / tint for our own sprite particles
+            }
+            try {
                 spawn(level, options, spec, pos, dir);
+            } finally {
+                if (custom) {
+                    FxParams.reset();
+                }
             }
         }
     }
@@ -102,6 +114,15 @@ public final class VfxRenderer {
                     double cx = Math.cos(a);
                     double cz = Math.sin(a);
                     level.addParticle(o, px + cx * s.radius, py + 1.0, pz + cz * s.radius, cx * sp, 0, cz * sp);
+                }
+            }
+            case "stamp" -> {
+                // `count` particles at (pos + dir * length), randomly spread by `spread`; ideal for big sprite particles
+                for (int i = 0; i < n; i++) {
+                    level.addParticle(o, px + d.x * s.length + (r.nextDouble() - 0.5) * 2 * s.sx,
+                            py + d.y * s.length + (r.nextDouble() - 0.5) * 2 * s.sy,
+                            pz + d.z * s.length + (r.nextDouble() - 0.5) * 2 * s.sz,
+                            (r.nextDouble() - 0.5) * sp, (r.nextDouble() - 0.5) * sp, (r.nextDouble() - 0.5) * sp);
                 }
             }
             case "slash" -> {

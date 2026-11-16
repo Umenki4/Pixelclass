@@ -1,9 +1,13 @@
 package com.pixelclasses.client;
 
 import com.pixelclasses.PixelClassesMod;
+import com.pixelclasses.client.fx.FxParticle;
+import com.pixelclasses.client.fx.FxProvider;
+import com.pixelclasses.registry.ModParticles;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -18,6 +22,15 @@ public final class ClientModEvents {
         for (var key : KeyBindings.CAST) {
             event.register(key);
         }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticles.SLASH.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SLASH));
+        event.registerSpriteSet(ModParticles.SWIRL.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SWIRL));
+        event.registerSpriteSet(ModParticles.SPARKLE.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SPARKLE));
+        event.registerSpriteSet(ModParticles.SHARD.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SHARD));
+        event.registerSpriteSet(ModParticles.GLOW.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.GLOW));
     }
 
     @SubscribeEvent

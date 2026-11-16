@@ -26,19 +26,36 @@
       "vfx": [
         {
           "particle": "dust_color_transition",
-          "color": "#FF5A7A",
-          "color_to": "#9A7BFF",
-          "size": 1.3,
+          "color": "#B070FF",
+          "color_to": "#F4EEFF",
+          "size": 1.2,
           "shape": "sphere",
           "radius": 1.0,
-          "count": 36,
-          "speed": 0.05
+          "count": 34,
+          "speed": 0.04,
+          "y_offset": 1.0
         },
         {
-          "particle": "minecraft:end_rod",
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.3,
+          "length": 0.0,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:sparkle",
           "shape": "burst",
           "count": 16,
-          "speed": 0.3
+          "speed": 0.3,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:shard",
+          "shape": "burst",
+          "count": 10,
+          "speed": 0.25,
+          "y_offset": 1.0
         }
       ]
     },
@@ -72,19 +89,35 @@
       },
       "arrival_vfx": [
         {
-          "particle": "dust",
-          "color": "#FF5A7A",
-          "size": 1.2,
-          "shape": "ring",
-          "radius": 1.3,
-          "count": 30,
-          "speed": 0.2
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0
         },
         {
-          "particle": "minecraft:end_rod",
+          "particle": "pixelclasses:sparkle",
           "shape": "burst",
-          "count": 16,
-          "speed": 0.3
+          "count": 14,
+          "speed": 0.25,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:shard",
+          "shape": "burst",
+          "count": 8,
+          "speed": 0.2,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:glow",
+          "shape": "sphere",
+          "radius": 0.9,
+          "count": 18,
+          "speed": 0.0,
+          "size": 2.0,
+          "y_offset": 1.0
         }
       ]
     },
@@ -99,76 +132,94 @@
       "knockback": 0.4,
       "vfx": [
         {
-          "particle": "dust",
-          "color": "#5FE6FF",
-          "size": 0.85,
-          "shape": "slash",
-          "angle": 170,
-          "count": 34,
-          "radius": 2.8,
+          "particle": "pixelclasses:slash",
+          "shape": "stamp",
+          "count": 1,
+          "size": 2.4,
           "roll": 45,
-          "length": 1.3,
+          "length": 1.4,
           "y_offset": 1.1
         },
         {
+          "particle": "pixelclasses:sparkle",
+          "shape": "stamp",
+          "count": 6,
+          "length": 1.4,
+          "y_offset": 1.1,
+          "spread": 0.9,
+          "speed": 0.05
+        },
+        {
+          "particle": "pixelclasses:shard",
+          "shape": "stamp",
+          "count": 2,
+          "length": 1.4,
+          "y_offset": 1.1,
+          "spread": 0.5,
+          "speed": 0.12
+        },
+        {
           "particle": "dust",
-          "color": "#E8F6FF",
+          "color": "#B070FF",
           "size": 0.6,
           "shape": "slash",
-          "angle": 156.4,
-          "count": 26,
-          "radius": 2.8,
+          "radius": 3.0399999999999996,
+          "angle": 140,
           "roll": 45,
           "length": 1.3,
-          "y_offset": 1.1
+          "y_offset": 1.1,
+          "count": 16
         },
         {
-          "particle": "minecraft:end_rod",
-          "shape": "slash",
-          "angle": 170,
-          "count": 6,
-          "radius": 2.8,
-          "roll": 45,
-          "length": 1.3,
-          "y_offset": 1.1
-        },
-        {
-          "particle": "dust",
-          "color": "#5FE6FF",
-          "size": 0.85,
-          "shape": "slash",
-          "angle": 170,
-          "count": 34,
-          "radius": 2.8,
+          "particle": "pixelclasses:slash",
+          "shape": "stamp",
+          "count": 1,
+          "size": 2.4,
           "roll": -45,
-          "length": 1.3,
+          "length": 1.4,
           "y_offset": 1.1
         },
         {
+          "particle": "pixelclasses:sparkle",
+          "shape": "stamp",
+          "count": 0,
+          "length": 1.4,
+          "y_offset": 1.1,
+          "spread": 0.9,
+          "speed": 0.05
+        },
+        {
+          "particle": "pixelclasses:shard",
+          "shape": "stamp",
+          "count": 2,
+          "length": 1.4,
+          "y_offset": 1.1,
+          "spread": 0.5,
+          "speed": 0.12
+        },
+        {
           "particle": "dust",
-          "color": "#E8F6FF",
+          "color": "#B070FF",
           "size": 0.6,
           "shape": "slash",
-          "angle": 156.4,
-          "count": 26,
-          "radius": 2.8,
+          "radius": 3.0399999999999996,
+          "angle": 140,
           "roll": -45,
           "length": 1.3,
-          "y_offset": 1.1
+          "y_offset": 1.1,
+          "count": 16
         },
         {
-          "particle": "minecraft:end_rod",
-          "shape": "slash",
-          "angle": 170,
-          "count": 6,
-          "radius": 2.8,
-          "roll": -45,
-          "length": 1.3,
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.1,
+          "length": 0.0,
           "y_offset": 1.1
         },
         {
           "particle": "dust",
-          "color": "#FF5A7A",
+          "color": "#F4EEFF",
           "size": 1.2,
           "shape": "ring",
           "radius": 3.0,
@@ -176,16 +227,18 @@
           "speed": 0.3
         },
         {
-          "particle": "minecraft:end_rod",
+          "particle": "pixelclasses:sparkle",
           "shape": "burst",
-          "count": 30,
-          "speed": 0.45
+          "count": 26,
+          "speed": 0.45,
+          "y_offset": 1.1
         },
         {
-          "particle": "minecraft:crit",
+          "particle": "pixelclasses:shard",
           "shape": "burst",
-          "count": 20,
-          "speed": 0.5
+          "count": 14,
+          "speed": 0.4,
+          "y_offset": 1.1
         }
       ],
       "sound": {

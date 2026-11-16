@@ -5,8 +5,8 @@
     "th": "ปามีดบิน"
   },
   "description": {
-    "en": "Fling a fan of seven silver throwing knives at your target.",
-    "th": "ปามีดเงิน 7 เล่มเป็นรูปพัดใส่เป้าหมาย"
+    "en": "Fling a fan of seven throwing knives at your target.",
+    "th": "ปามีดเงา 7 เล่มเป็นรูปพัดใส่เป้าหมาย"
   },
   "cooldown": 5.0,
   "mana_cost": 15,
@@ -36,18 +36,26 @@
       },
       "trail": [
         {
+          "particle": "pixelclasses:glow",
+          "shape": "point",
+          "count": 2,
+          "spread": 0.03,
+          "size": 0.9
+        },
+        {
           "particle": "dust",
-          "color": "#E8F6FF",
+          "color": "#F4EEFF",
           "size": 0.7,
           "shape": "point",
           "count": 2,
           "spread": 0.02
         },
         {
-          "particle": "minecraft:end_rod",
+          "particle": "pixelclasses:sparkle",
           "shape": "point",
           "count": 1,
-          "spread": 0.02
+          "spread": 0.08,
+          "speed": 0.02
         }
       ],
       "on_end": [
@@ -55,19 +63,23 @@
           "type": "vfx",
           "vfx": [
             {
-              "particle": "minecraft:end_rod",
+              "particle": "pixelclasses:sparkle",
               "shape": "burst",
-              "count": 5,
+              "count": 6,
               "speed": 0.15
             },
             {
-              "particle": "dust",
-              "color": "#5FE6FF",
-              "size": 0.9,
-              "shape": "ring",
-              "radius": 0.4,
-              "count": 8,
-              "speed": 0.05
+              "particle": "pixelclasses:shard",
+              "shape": "burst",
+              "count": 4,
+              "speed": 0.15
+            },
+            {
+              "particle": "pixelclasses:swirl",
+              "shape": "stamp",
+              "count": 1,
+              "size": 0.35,
+              "length": 0.0
             }
           ]
         }
