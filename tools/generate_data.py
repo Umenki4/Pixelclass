@@ -12,9 +12,11 @@ def dust(c, size=1.2, shape="point", **kw): d = {"particle": "dust", "color": c,
 def dtr(c1, c2, size=1.4, shape="point", **kw): d = {"particle": "dust_color_transition", "color": c1, "color_to": c2, "size": size, "shape": shape}; d.update(kw); return d
 def pt(name, shape="point", **kw): d = {"particle": "minecraft:" + name, "shape": shape}; d.update(kw); return d
 def eff(e, sec, amp=0): return {"effect": "minecraft:" + e, "duration": sec, "amplifier": amp}
-def skill(cls, en, th, den, dth, cd, mana, stat, actions):
-    return {"class": "pixelclasses:" + cls, "name": {"en": en, "th": th}, "description": {"en": den, "th": dth},
+def skill(cls, en, th, den, dth, cd, mana, stat, actions, target=None):
+    d = {"class": "pixelclasses:" + cls, "name": {"en": en, "th": th}, "description": {"en": den, "th": dth},
             "cooldown": cd, "mana_cost": mana, "scaling": {"stat": stat, "per_point": 0.01}, "actions": actions}
+    if target: d["target"] = {"required": True, "range": target}
+    return d
 
 S = {}
 # ------------------------------------------------------------------ WIZARD (scales with INT)
@@ -142,74 +144,81 @@ S["cleave"] = skill("warrior", "Cleave", "ฟันกวาด", "A quick wide 
 # ------------------------------------------------------------------ ASSASSIN (scales with DEX) - purple / black / white, custom sprite particles
 PUR, DPUR, LAV, WHT = "#B070FF", "#6A3CFF", "#D8C0FF", "#F4EEFF"
 def cp(name, shape, **kw):
-    """A custom sprite particle (see client/fx): slash, swirl, sparkle, shard, glow."""
+    """A custom sprite particle (see client/fx): slash, swirl, sparkle, shard, glow, burst (16-frame explosion)."""
     d = {"particle": "pixelclasses:" + name, "shape": shape}; d.update(kw); return d
-def fx_slash(roll, size=1.5, y=1.1, sparks=5):
+def fx_slash(roll, size=1.5, y=1.1, sparks=5, length=1.4):
     """One crescent slash streak (sprite cut from the concept art) + sparkles + shards + a thin crisp arc underneath."""
-    return [cp("slash", "stamp", count=1, size=size, roll=roll, length=1.4, y_offset=y),
-            cp("sparkle", "stamp", count=sparks, length=1.4, y_offset=y, spread=0.9, speed=0.05),
-            cp("shard", "stamp", count=2, length=1.4, y_offset=y, spread=0.5, speed=0.12),
-            dust(PUR, 0.6, "slash", radius=1.9 * size / 1.5, angle=140, roll=roll, length=1.3, y_offset=y, count=16)]
-def fx_cross(size=2.0, y=1.1):
-    return fx_slash(45, size, y, 6) + fx_slash(-45, size, y, 0) + [cp("swirl", "stamp", count=1, size=1.1, length=0.0, y_offset=y)]
+    return [cp("slash", "stamp", count=1, size=size, roll=roll, length=length, y_offset=y),
+            cp("sparkle", "stamp", count=sparks, length=length, y_offset=y, spread=0.9, speed=0.05),
+            cp("shard", "stamp", count=2, length=length, y_offset=y, spread=0.5, speed=0.12),
+            dust(PUR, 0.6, "slash", radius=1.9 * size / 1.5, angle=140, roll=roll, length=length - 0.1 if length > 0 else 0.0, y_offset=y, count=16)]
+def fx_cross(size=2.0, y=1.1, length=1.4):
+    return fx_slash(45, size, y, 6, length) + fx_slash(-45, size, y, 0, length) + [cp("swirl", "stamp", count=1, size=1.1, length=0.0, y_offset=y)]
 def fx_vanish(y=1.0):
     return [dtr(PUR, WHT, 1.2, "sphere", radius=1.0, count=34, speed=0.04, y_offset=y), cp("swirl", "stamp", count=1, size=1.3, length=0.0, y_offset=y),
             cp("sparkle", "burst", count=16, speed=0.3, y_offset=y), cp("shard", "burst", count=10, speed=0.25, y_offset=y)]
 def fx_arrive(y=1.0):
     return [cp("swirl", "stamp", count=1, size=1.1, length=0.0, y_offset=y), cp("sparkle", "burst", count=14, speed=0.25, y_offset=y),
             cp("shard", "burst", count=8, speed=0.2, y_offset=y), cp("glow", "sphere", radius=0.9, count=18, speed=0.0, size=2.0, y_offset=y)]
+def hit(size=1.0):
+    """The 16-frame purple explosion, shown ON the target every time it is hit."""
+    return [cp("burst", "stamp", count=1, size=size, length=0.0)]
+DAGGER = "pixelclasses:item/void_dagger"   # the imported 3D model (assets/pixelclasses/models/item/void_dagger.json)
 
 acts = [
   {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.0), "vfx": fx_vanish()},
   {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 1.6, 0), eff("speed", 1.6, 1)]},
-  {"type": "shadow_step", "delay": 3, "range": 14, "behind": 1.7, "fallback": 7, "sound": snd("shadow_step", 1.0), "arrival_sound": snd("shadow_step", 0.8, 1.3), "arrival_vfx": fx_arrive()}]
+  {"type": "shadow_step", "delay": 3, "range": 14, "behind": 1.7, "sound": snd("shadow_step", 1.0), "arrival_sound": snd("shadow_step", 0.8, 1.3), "arrival_vfx": fx_arrive()}]
 for i, r in enumerate([20, -35, 70, -60, 105, -15]):
-    acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 7 + 2 * i, "radius": 3.3, "damage": 2.7, "damage_type": "physical", "knockback": 0.1,
-                 "vfx": fx_slash(r, 1.5), "sound": snd("dagger_slash", 0.7, 1.0 + 0.05 * i)})
-acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 21, "radius": 3.6, "damage": 8, "damage_type": "physical", "knockback": 0.7,
-             "vfx": fx_cross(2.1) + [cp("sparkle", "burst", count=18, speed=0.4, y_offset=1.1), dust(WHT, 1.1, "ring", radius=3.2, count=44, speed=0.3)],
-             "sound": snd("dagger_crit", 1.2)})
-S["shadow_strike"] = skill("assassin", "Shadow Strike", "หายตัวฟันรัว", "Vanish, reappear behind the enemy you are looking at, and carve them with a flurry of slashes ending in a heavy finisher.",
-  "หายตัวไปปรากฏด้านหลังศัตรูที่เล็งอยู่ แล้วฟันรัวต่อเนื่องปิดท้ายด้วยท่าฟันหนัก", 10.0, 30, "DEX", acts)
+    acts.append({"type": "area", "at": "target", "direction": "caster", "delay": 7 + 2 * i, "radius": 2.4, "max_targets": 1, "damage": 2.7, "damage_type": "physical", "knockback": 0.05,
+                 "vfx": fx_slash(r, 1.5, 1.0, 3, 0.0), "hit_vfx": hit(0.8), "sound": snd("dagger_slash", 0.7, 1.0 + 0.05 * i)})
+acts.append({"type": "area", "at": "target", "direction": "caster", "delay": 21, "radius": 2.6, "max_targets": 1, "damage": 8, "damage_type": "physical", "knockback": 0.7,
+             "vfx": fx_cross(2.1, 1.0, 0.0) + [cp("sparkle", "burst", count=18, speed=0.4, y_offset=1.0), dust(WHT, 1.1, "ring", radius=2.6, count=44, speed=0.3)],
+             "hit_vfx": hit(1.6), "sound": snd("dagger_crit", 1.2)})
+S["shadow_strike"] = skill("assassin", "Shadow Strike", "หายตัวฟันรัว", "Aim at a target: vanish, reappear behind it and carve it with a flurry of slashes ending in a heavy finisher. Needs a target under the crosshair.",
+  "เล็งไปที่เป้าหมาย: หายตัวไปปรากฏด้านหลัง ฟันรัวต่อเนื่องปิดท้ายด้วยท่าฟันหนัก (ต้องเล็งที่เป้าหมายก่อนจึงจะใช้ได้)", 10.0, 30, "DEX", acts, target=14)
 
 acts = [{"type": "vfx", "at": "caster", "sound": snd("shadow_step", 0.8, 1.2), "vfx": [dust(PUR, 1.1, "spiral", radius=1.2, height=2.0, turns=3, count=34), cp("sparkle", "ring", radius=2, count=16, speed=0.08, y_offset=1.0), cp("swirl", "stamp", count=1, size=1.4, length=0.0, y_offset=0.3)]},
         {"type": "area", "affect": "self", "radius": 0, "effects": [eff("speed", 2.5, 1)]}]
 for i, r in enumerate([0, 60, -60, 120, -120, 30, -30, 90, -90, 150]):
     acts.append({"type": "area", "at": "caster", "direction": "caster", "delay": 2 + 2 * i, "radius": 3.4, "damage": 2.3, "damage_type": "physical", "knockback": 0.1,
-                 "vfx": fx_slash(r, 1.6, 1.1, 3), "sound": snd("dagger_slash", 0.6, 0.95 + 0.04 * (i % 5))})
+                 "vfx": fx_slash(r, 1.6, 1.1, 3), "hit_vfx": hit(0.7), "sound": snd("dagger_slash", 0.6, 0.95 + 0.04 * (i % 5))})
 S["blade_flurry"] = skill("assassin", "Blade Flurry", "พายุใบมีด", "Spin in a storm of twin blades, slashing every enemy around you ten times in two seconds.",
   "หมุนตัวเป็นพายุมีดคู่ ฟันศัตรูรอบตัว 10 ครั้งใน 2 วินาที", 9.0, 28, "DEX", acts)
 
-S["phantom_lunge"] = skill("assassin", "Phantom Lunge", "พุ่งเงา", "Dash forward as a streak of shadow, cutting through anything in the way and ending with a double slash.",
-  "พุ่งไปข้างหน้าเป็นเงาวูบ ตัดทุกอย่างที่ขวางทาง ปิดท้ายด้วยฟันไขว้", 6.0, 18, "DEX", [
-  {"type": "dash", "strength": 2.6, "vertical": 0.05, "sound": snd("whoosh", 0.9, 1.3), "vfx": fx_vanish(0.9)},
-  {"type": "vfx", "at": "caster", "repeat": {"count": 6, "interval": 2}, "vfx": [cp("glow", "column", radius=0.3, height=1.9, count=10, size=1.6), dust(PUR, 0.9, "column", radius=0.45, height=1.9, count=10),
-      cp("sparkle", "column", radius=0.5, height=1.9, count=4), cp("shard", "stamp", count=2, length=0.0, y_offset=1.0, spread=0.4, speed=0.05)]},
-  {"type": "area", "at": "caster", "repeat": {"count": 6, "interval": 2}, "radius": 2.2, "damage": 3.4, "damage_type": "physical", "knockback": 0.25},
-  {"type": "area", "at": "caster", "direction": "caster", "delay": 12, "radius": 3.2, "damage": 5, "damage_type": "physical", "knockback": 0.6,
-   "vfx": fx_slash(30, 1.7) + fx_slash(-30, 1.7, 1.1, 0), "sound": snd("dagger_crit", 1.0)}])
+S["phantom_lunge"] = skill("assassin", "Phantom Lunge", "พุ่งเงา", "Aim at a target and streak to it as a shadow, landing a single heavy cross-slash. Needs a target under the crosshair.",
+  "เล็งไปที่เป้าหมายแล้วพุ่งเงาไปหา ฟันไขว้หนัก 1 ครั้ง (ต้องเล็งที่เป้าหมายก่อนจึงจะใช้ได้)", 6.0, 18, "DEX", [
+  {"type": "vfx", "at": "caster", "sound": snd("whoosh", 0.9, 1.3), "vfx": fx_vanish(0.9)},
+  {"type": "shadow_step", "delay": 1, "side": "front", "behind": 1.6, "sound": snd("shadow_step", 0.9, 1.1), "arrival_sound": snd("shadow_step", 0.8, 1.3),
+   "path_vfx": [cp("glow", "line", count=40, spread=0.12, size=1.4, y_offset=1.0), dust(PUR, 0.9, "line", count=40, spread=0.1, y_offset=1.0), cp("sparkle", "line", count=12, spread=0.3, y_offset=1.0)],
+   "arrival_vfx": fx_arrive()},
+  {"type": "area", "at": "target", "direction": "caster", "delay": 4, "radius": 2.6, "max_targets": 1, "damage": 9, "damage_type": "physical", "knockback": 0.6,
+   "vfx": fx_cross(1.9, 1.0, 0.0), "hit_vfx": hit(1.4), "sound": snd("dagger_crit", 1.0)}], target=12)
 
 S["smoke_veil"] = skill("assassin", "Smoke Veil", "ม่านควัน", "Throw down a smoke bomb: blind and slow nearby enemies while you turn invisible and speed away.",
   "ปาระเบิดควัน ทำให้ศัตรูรอบๆ ตาบอดและช้าลง ขณะที่คุณล่องหนและวิ่งเร็วขึ้น", 16.0, 25, "DEX", [
   {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.1, 0.9), "vfx": [pt("cloud", "sphere", radius=2.2, count=60, speed=0.02, y_offset=1.0), dust("#8A78B8", 1.5, "ring", radius=4.5, count=50, speed=0.12, y_offset=0.3),
       cp("swirl", "stamp", count=1, size=2.2, length=0.0, y_offset=0.4), cp("sparkle", "burst", count=22, speed=0.35, y_offset=1.0), cp("shard", "burst", count=12, speed=0.3, y_offset=1.0)]},
   {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 5.0, 0), eff("speed", 5.0, 1)]},
-  {"type": "area", "affect": "enemies", "radius": 5, "damage": 0, "effects": [eff("blindness", 2.5, 0), eff("slowness", 2.0, 0)], "hit_vfx": [pt("cloud", "burst", count=8, speed=0.1)]}])
+  {"type": "area", "affect": "enemies", "radius": 5, "damage": 0, "effects": [eff("blindness", 2.5, 0), eff("slowness", 2.0, 0)], "hit_vfx": [pt("cloud", "burst", count=8, speed=0.1)] + hit(0.8)}])
 
-S["throwing_knives"] = skill("assassin", "Throwing Knives", "ปามีดบิน", "Fling a fan of seven throwing knives at your target.",
-  "ปามีดเงา 7 เล่มเป็นรูปพัดใส่เป้าหมาย", 5.0, 15, "DEX", [
-  {"type": "projectile", "at": "eye", "repeat": {"count": 7, "interval": 1}, "speed": 2.8, "range": 32, "hit_radius": 0.6, "spread": 7, "damage": 3.6, "damage_type": "projectile", "knockback": 0.1,
-   "sound": snd("knife_throw", 0.7), "trail": [cp("glow", "point", count=2, spread=0.03, size=0.9), dust(WHT, 0.7, count=2, spread=0.02), cp("sparkle", "point", count=1, spread=0.08, speed=0.02)],
+S["throwing_knives"] = skill("assassin", "Throwing Knives", "ปามีดบิน", "Fling a fan of seven spinning void daggers at your target.",
+  "ปามีดโมเดล 3D หมุนติ้ว 7 เล่มเป็นรูปพัดใส่เป้าหมาย", 5.0, 15, "DEX", [
+  {"type": "projectile", "at": "eye", "repeat": {"count": 7, "interval": 1}, "speed": 2.0, "range": 32, "hit_radius": 0.7, "spread": 7, "damage": 3.6, "damage_type": "projectile", "knockback": 0.1,
+   "sound": snd("knife_throw", 0.7),
+   "trail": [{"particle": DAGGER, "shape": "model", "size": 0.5, "speed": 2.0, "angle": 30, "turns": 2.5},
+             cp("glow", "point", count=3, spread=0.04, size=1.2), dust(WHT, 0.8, count=2, spread=0.03), cp("sparkle", "point", count=1, spread=0.1, speed=0.02)],
+   "hit_vfx": hit(1.0),
    "on_end": [{"type": "vfx", "vfx": [cp("sparkle", "burst", count=6, speed=0.15), cp("shard", "burst", count=4, speed=0.15), cp("swirl", "stamp", count=1, size=0.35, length=0.0)]}]}])
 
-S["execution"] = skill("assassin", "Execution", "สังหาร", "Mark your prey, vanish, and strike from behind with a devastating cross-slash.",
-  "ล็อกเหยื่อ หายตัว แล้วฟันไขว้ทรงพลังจากด้านหลัง", 14.0, 35, "DEX", [
+S["execution"] = skill("assassin", "Execution", "สังหาร", "Aim at your prey, vanish, and strike from behind with a devastating cross-slash. Needs a target under the crosshair.",
+  "เล็งไปที่เหยื่อ หายตัว แล้วฟันไขว้ทรงพลังจากด้านหลัง (ต้องเล็งที่เป้าหมายก่อนจึงจะใช้ได้)", 14.0, 35, "DEX", [
   {"type": "vfx", "at": "caster", "sound": snd("vanish", 1.0, 1.1), "vfx": fx_vanish()},
   {"type": "area", "affect": "self", "radius": 0, "effects": [eff("invisibility", 1.2, 0)]},
-  {"type": "shadow_step", "delay": 3, "range": 12, "behind": 1.5, "fallback": 0, "sound": snd("shadow_step", 1.0, 0.9), "arrival_sound": snd("shadow_step", 0.8, 1.2), "arrival_vfx": fx_arrive()},
-  {"type": "area", "at": "caster", "direction": "caster", "delay": 9, "radius": 3.0, "damage": 20, "damage_type": "physical", "knockback": 0.4,
-   "vfx": fx_cross(2.4) + [dust(WHT, 1.2, "ring", radius=3.0, count=44, speed=0.3), cp("sparkle", "burst", count=26, speed=0.45, y_offset=1.1), cp("shard", "burst", count=14, speed=0.4, y_offset=1.1)],
-   "sound": snd("dagger_crit", 1.4)}])
+  {"type": "shadow_step", "delay": 3, "range": 14, "behind": 1.5, "sound": snd("shadow_step", 1.0, 0.9), "arrival_sound": snd("shadow_step", 0.8, 1.2), "arrival_vfx": fx_arrive()},
+  {"type": "area", "at": "target", "direction": "caster", "delay": 9, "radius": 2.8, "max_targets": 1, "damage": 20, "damage_type": "physical", "knockback": 0.4,
+   "vfx": fx_cross(2.4, 1.0, 0.0) + [dust(WHT, 1.2, "ring", radius=2.8, count=44, speed=0.3), cp("sparkle", "burst", count=26, speed=0.45, y_offset=1.0), cp("shard", "burst", count=14, speed=0.4, y_offset=1.0)],
+   "hit_vfx": hit(2.0), "sound": snd("dagger_crit", 1.4)}], target=14)
 
 CLASSES = {
  "wizard": {"name": {"en": "Wizard", "th": "นักเวท"}, "color": "#9B6BFF",

@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public final class Targets {
     private Targets() {}
 
+    /** Everything alive except you, your pets, your allies, armor stands - monsters, animals, villagers, all of it. */
     public static boolean isEnemy(ServerPlayer caster, LivingEntity e) {
         if (e == caster || e instanceof ArmorStand || e.isSpectator()) {
             return false;
@@ -33,10 +34,32 @@ public final class Targets {
         if (e instanceof Player) {
             return ClassConfig.get(ClassConfig.HURT_PLAYERS);
         }
-        if (ClassConfig.get(ClassConfig.HURT_PASSIVE_MOBS) || e instanceof Enemy) {
-            return true;
+        return true;
+    }
+
+    /** The living thing under the crosshair within {@code range} (walls block the view), or null. */
+    public static LivingEntity lookTarget(ServerLevel level, ServerPlayer caster, double range) {
+        Vec3 eye = caster.getEyePosition();
+        Vec3 end = eye.add(caster.getLookAngle().scale(range));
+        net.minecraft.world.phys.BlockHitResult block = level.clip(new net.minecraft.world.level.ClipContext(eye, end,
+                net.minecraft.world.level.ClipContext.Block.COLLIDER, net.minecraft.world.level.ClipContext.Fluid.NONE, caster));
+        if (block.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+            end = block.getLocation();
         }
-        return e instanceof Mob mob && mob.getTarget() == caster;
+        LivingEntity best = null;
+        double bestDist = Double.MAX_VALUE;
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(eye, end).inflate(2.0), x -> x.isAlive() && isEnemy(caster, x))) {
+            AABB box = e.getBoundingBox().inflate(0.3);
+            java.util.Optional<Vec3> hit = box.clip(eye, end);
+            if (hit.isPresent() || box.contains(eye)) {
+                double d = eye.distanceToSqr(hit.orElse(eye));
+                if (d < bestDist) {
+                    bestDist = d;
+                    best = e;
+                }
+            }
+        }
+        return best;
     }
 
     public static boolean isAlly(ServerPlayer caster, LivingEntity e) {

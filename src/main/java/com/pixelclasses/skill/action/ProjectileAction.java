@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
@@ -49,6 +50,8 @@ public final class ProjectileAction extends SkillAction {
     private String affect;
     private List<EffectSpec> effects;
     private List<VfxSpec> trail;
+    private List<VfxSpec> hitVfx;
+    private static final AtomicInteger NEXT_FLIGHT = new AtomicInteger();
     private List<SkillAction> onHit;
     private List<SkillAction> onEnd;
 
@@ -68,6 +71,7 @@ public final class ProjectileAction extends SkillAction {
         a.affect = str(o, "affect", "enemies");
         a.effects = effects(o);
         a.trail = vfxList(o, "trail");
+        a.hitVfx = vfxList(o, "hit_vfx");
         a.onHit = Actions.parseList(com.pixelclasses.data.JsonUtil.array(o, "on_hit"));
         a.onEnd = Actions.parseList(com.pixelclasses.data.JsonUtil.array(o, "on_end"));
         return a;
@@ -113,6 +117,7 @@ public final class ProjectileAction extends SkillAction {
         private Vec3 vel;
         private double traveled;
         private int pierceLeft = pierce;
+        private final int flightId = NEXT_FLIGHT.incrementAndGet();
 
         Flight(SkillContext ctx, ServerLevel level, Vec3 start, Vec3 velocity) {
             this.ctx = ctx;
@@ -163,7 +168,7 @@ public final class ProjectileAction extends SkillAction {
                 pos = next;
                 vel = vel.add(0, -gravity, 0);
                 if (!trail.isEmpty()) {
-                    ModNetwork.sendVfx(level, pos, vel, trail);
+                    ModNetwork.sendVfx(level, pos, vel, trail, flightId);
                 }
                 if (traveled >= range) {
                     finish(pos, caster);
@@ -190,6 +195,9 @@ public final class ProjectileAction extends SkillAction {
                 if (instance != null) {
                     target.addEffect(instance, caster);
                 }
+            }
+            if (!hitVfx.isEmpty()) {
+                ModNetwork.sendVfx(level, target.position().add(0, target.getBbHeight() / 2.0, 0), vel, hitVfx);
             }
             Vec3 dir = vel.lengthSqr() < 1.0E-6 ? new Vec3(0, 0, 1) : vel.normalize();
             for (SkillAction a : onHit) {

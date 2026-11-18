@@ -62,7 +62,7 @@ public final class ClientPacketHandler {
         mc.setScreen(kind == 0 ? new ClassSelectScreen() : new SkillScreen());
     }
 
-    public static void onVfx(Vec3 pos, Vec3 dir, List<VfxSpec> specs) {
-        VfxRenderer.play(pos, dir, specs);
+    public static void onVfx(Vec3 pos, Vec3 dir, List<VfxSpec> specs, int flightId) {
+        VfxRenderer.play(pos, dir, specs, flightId);
     }
 }

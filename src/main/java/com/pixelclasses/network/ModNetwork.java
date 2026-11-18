@@ -91,8 +91,13 @@ public final class ModNetwork {
 
     /** Shows particle effects to everyone within 72 blocks. */
     public static void sendVfx(ServerLevel level, Vec3 pos, Vec3 dir, List<VfxSpec> specs) {
+        sendVfx(level, pos, dir, specs, 0);
+    }
+
+    /** flightId != 0 lets the client follow ONE flying object (e.g. a 3D dagger) from packet to packet. */
+    public static void sendVfx(ServerLevel level, Vec3 pos, Vec3 dir, List<VfxSpec> specs, int flightId) {
         CHANNEL.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(pos.x, pos.y, pos.z, 72.0, level.dimension())),
-                new S2C.Vfx(pos, dir, specs));
+                new S2C.Vfx(pos, dir, specs, flightId));
     }
 
     public static void sendToServer(Object message) {

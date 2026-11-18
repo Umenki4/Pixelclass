@@ -5,6 +5,7 @@ import com.pixelclasses.client.fx.FxParticle;
 import com.pixelclasses.client.fx.FxProvider;
 import com.pixelclasses.registry.ModParticles;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -30,7 +31,13 @@ public final class ClientModEvents {
         event.registerSpriteSet(ModParticles.SWIRL.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SWIRL));
         event.registerSpriteSet(ModParticles.SPARKLE.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SPARKLE));
         event.registerSpriteSet(ModParticles.SHARD.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.SHARD));
+        event.registerSpriteSet(ModParticles.BURST.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.BURST));
         event.registerSpriteSet(ModParticles.GLOW.get(), sprites -> new FxProvider(sprites, FxParticle.Kind.GLOW));
+    }
+
+    @SubscribeEvent
+    public static void onRegisterModels(ModelEvent.RegisterAdditional event) {
+        event.register(ModelProjectiles.DAGGER_MODEL);   // so the flying dagger model gets baked
     }
 
     @SubscribeEvent

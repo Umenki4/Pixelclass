@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 
 /** Validates and starts a skill (cooldown, mana, equipped?) on the server. */
 public final class SkillCaster {
@@ -46,6 +47,15 @@ public final class SkillCaster {
         long now = player.level().getGameTime();
         int cooldown = Math.max(1, (int) Math.round(skill.cooldownTicks() * ClassConfig.get(ClassConfig.COOLDOWN_MULT)));
 
+        LivingEntity target = null;
+        if (skill.needsTarget()) {
+            target = Targets.lookTarget(player.serverLevel(), player, skill.targetRange());
+            if (target == null) {   // nothing under the crosshair: refuse BEFORE any mana/cooldown is spent
+                player.displayClientMessage(Component.translatable("message.pixelclasses.need_target"), true);
+                return false;
+            }
+        }
+
         if (!ignoreCosts) {
             if (now < data.cooldownEnd(id)) {
                 return false;
@@ -63,7 +73,7 @@ public final class SkillCaster {
 
         double power = (1.0 + PixelStatsBridge.points(player, skill.scalingStat()) * skill.scalingPerPoint())
                 * ClassConfig.get(ClassConfig.DAMAGE_MULT);
-        SkillContext context = SkillContext.create(player, power);
+        SkillContext context = SkillContext.create(player, power, target);
         player.swing(InteractionHand.MAIN_HAND, true);
         for (SkillAction action : skill.actions()) {
             action.schedule(context);

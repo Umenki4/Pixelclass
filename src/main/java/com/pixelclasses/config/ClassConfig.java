@@ -19,7 +19,6 @@ public final class ClassConfig {
     public static final ForgeConfigSpec.DoubleValue MANA_COST_MULT;
     public static final ForgeConfigSpec.DoubleValue MANA_REGEN_MULT;
     public static final ForgeConfigSpec.BooleanValue HURT_PLAYERS;
-    public static final ForgeConfigSpec.BooleanValue HURT_PASSIVE_MOBS;
     public static final ForgeConfigSpec.IntValue MAX_TASKS_PER_PLAYER;
     public static final ForgeConfigSpec.IntValue MAX_TARGETS_PER_ACTION;
 
@@ -29,7 +28,6 @@ public final class ClassConfig {
         OPEN_SELECTION_ON_JOIN = bool(b, "openSelectionOnFirstJoin", "Open the class selection window for players that have no class yet.", true);
         ALLOW_CLASS_CHANGE = bool(b, "allowClassChange", "If false, a player can only pick a class once (operators can still change it with /pixelclasses set).", true);
         HURT_PLAYERS = bool(b, "skillsCanHurtPlayers", "Skills may damage other players (the normal server PvP rule still applies on top of this).", true);
-        HURT_PASSIVE_MOBS = bool(b, "skillsCanHurtPassiveMobs", "Skills may damage animals/villagers. If false only hostile mobs (and mobs targeting you) are hit.", false);
         b.pop();
 
         b.push("balance");

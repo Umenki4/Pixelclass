@@ -179,11 +179,13 @@ public final class S2C {
         private final Vec3 pos;
         private final Vec3 dir;
         private final List<VfxSpec> specs;
+        private final int flightId;
 
-        public Vfx(Vec3 pos, Vec3 dir, List<VfxSpec> specs) {
+        public Vfx(Vec3 pos, Vec3 dir, List<VfxSpec> specs, int flightId) {
             this.pos = pos;
             this.dir = dir;
             this.specs = specs;
+            this.flightId = flightId;
         }
 
         public static void encode(Vfx m, FriendlyByteBuf b) {
@@ -197,6 +199,7 @@ public final class S2C {
             for (VfxSpec s : m.specs) {
                 s.write(b);
             }
+            b.writeVarInt(m.flightId);
         }
 
         public static Vfx decode(FriendlyByteBuf b) {
@@ -207,12 +210,12 @@ public final class S2C {
             for (int i = 0; i < n; i++) {
                 list.add(VfxSpec.read(b));
             }
-            return new Vfx(pos, dir, list);
+            return new Vfx(pos, dir, list, b.readVarInt());
         }
 
         public static void handle(Vfx m, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-                    () -> () -> ClientPacketHandler.onVfx(m.pos, m.dir, m.specs)));
+                    () -> () -> ClientPacketHandler.onVfx(m.pos, m.dir, m.specs, m.flightId)));
             ctx.get().setPacketHandled(true);
         }
     }

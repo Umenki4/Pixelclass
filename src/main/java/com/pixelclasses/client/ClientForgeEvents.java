@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +26,7 @@ public final class ClientForgeEvents {
             return;
         }
         ClientData.tick++;
+        ModelProjectiles.clientTick();
         Minecraft mc = Minecraft.getInstance();
         boolean canAct = mc.player != null && mc.screen == null;
 
@@ -57,6 +59,13 @@ public final class ClientForgeEvents {
             UiSounds.play("ui_deny", 0.8F, 0.7F);
         }
         ModNetwork.sendToServer(new C2S.Cast(slot));
+    }
+
+    @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            ModelProjectiles.render(event.getPoseStack(), event.getCamera().getPosition(), event.getPartialTick());
+        }
     }
 
     @SubscribeEvent

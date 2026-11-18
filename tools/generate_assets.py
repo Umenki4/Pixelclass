@@ -269,9 +269,7 @@ ui = {"panel": panel(), "row": row(), "row_hover": row(True), "banner": banner()
 for n, im in ui.items(): im.save(os.path.join(GUI, n + ".png"))
 logo().save(os.path.join(ASSETS, "..", "..", "logo.png"))
 for n, f in (("wizard", cls_wizard), ("archer", cls_archer), ("warrior", cls_warrior), ("assassin", cls_assassin)): f().save(os.path.join(CLASS, n + ".png"))
-ITEM = os.path.join(ASSETS, "textures", "item"); os.makedirs(ITEM, exist_ok=True); item_shadow_dagger().save(os.path.join(ITEM, "shadow_dagger.png"))
-MODELS = os.path.join(ASSETS, "models", "item"); os.makedirs(MODELS, exist_ok=True)
-json.dump(dagger_model(), open(os.path.join(MODELS, "shadow_dagger.json"), "w"), indent=2)
+ITEM = os.path.join(ASSETS, "textures", "item"); os.makedirs(ITEM, exist_ok=True)   # the dagger model/texture are imported by hand (void_dagger.*)
 skills = dict(fireball=ic_fireball, frost_nova=ic_frost, arcane_beam=ic_beam, meteor=ic_meteor, blink=ic_blink, arcane_barrier=ic_barrier,
               rapid_shot=ic_rapid, piercing_arrow=ic_pierce, arrow_rain=ic_rain, hunters_focus=ic_focus, poison_trap=ic_poison, evasive_roll=ic_roll,
               ground_slam=ic_slam, whirlwind=ic_whirl, battle_cry=ic_cry, shield_wall=ic_shieldwall, charge=ic_charge, cleave=ic_cleave,

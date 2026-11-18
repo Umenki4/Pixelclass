@@ -5,8 +5,8 @@
     "th": "พุ่งเงา"
   },
   "description": {
-    "en": "Dash forward as a streak of shadow, cutting through anything in the way and ending with a double slash.",
-    "th": "พุ่งไปข้างหน้าเป็นเงาวูบ ตัดทุกอย่างที่ขวางทาง ปิดท้ายด้วยฟันไขว้"
+    "en": "Aim at a target and streak to it as a shadow, landing a single heavy cross-slash. Needs a target under the crosshair.",
+    "th": "เล็งไปที่เป้าหมายแล้วพุ่งเงาไปหา ฟันไขว้หนัก 1 ครั้ง (ต้องเล็งที่เป้าหมายก่อนจึงจะใช้ได้)"
   },
   "cooldown": 6.0,
   "mana_cost": 18,
@@ -16,9 +16,8 @@
   },
   "actions": [
     {
-      "type": "dash",
-      "strength": 2.6,
-      "vertical": 0.05,
+      "type": "vfx",
+      "at": "caster",
       "sound": {
         "id": "pixelclasses:whoosh",
         "volume": 0.9,
@@ -61,67 +60,88 @@
       ]
     },
     {
-      "type": "vfx",
-      "at": "caster",
-      "repeat": {
-        "count": 6,
-        "interval": 2
+      "type": "shadow_step",
+      "delay": 1,
+      "side": "front",
+      "behind": 1.6,
+      "sound": {
+        "id": "pixelclasses:shadow_step",
+        "volume": 0.9,
+        "pitch": 1.1
       },
-      "vfx": [
+      "arrival_sound": {
+        "id": "pixelclasses:shadow_step",
+        "volume": 0.8,
+        "pitch": 1.3
+      },
+      "path_vfx": [
         {
           "particle": "pixelclasses:glow",
-          "shape": "column",
-          "radius": 0.3,
-          "height": 1.9,
-          "count": 10,
-          "size": 1.6
+          "shape": "line",
+          "count": 40,
+          "spread": 0.12,
+          "size": 1.4,
+          "y_offset": 1.0
         },
         {
           "particle": "dust",
           "color": "#B070FF",
           "size": 0.9,
-          "shape": "column",
-          "radius": 0.45,
-          "height": 1.9,
-          "count": 10
+          "shape": "line",
+          "count": 40,
+          "spread": 0.1,
+          "y_offset": 1.0
         },
         {
           "particle": "pixelclasses:sparkle",
-          "shape": "column",
-          "radius": 0.5,
-          "height": 1.9,
-          "count": 4
+          "shape": "line",
+          "count": 12,
+          "spread": 0.3,
+          "y_offset": 1.0
+        }
+      ],
+      "arrival_vfx": [
+        {
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:sparkle",
+          "shape": "burst",
+          "count": 14,
+          "speed": 0.25,
+          "y_offset": 1.0
         },
         {
           "particle": "pixelclasses:shard",
-          "shape": "stamp",
-          "count": 2,
-          "length": 0.0,
-          "y_offset": 1.0,
-          "spread": 0.4,
-          "speed": 0.05
+          "shape": "burst",
+          "count": 8,
+          "speed": 0.2,
+          "y_offset": 1.0
+        },
+        {
+          "particle": "pixelclasses:glow",
+          "shape": "sphere",
+          "radius": 0.9,
+          "count": 18,
+          "speed": 0.0,
+          "size": 2.0,
+          "y_offset": 1.0
         }
       ]
     },
     {
       "type": "area",
-      "at": "caster",
-      "repeat": {
-        "count": 6,
-        "interval": 2
-      },
-      "radius": 2.2,
-      "damage": 3.4,
-      "damage_type": "physical",
-      "knockback": 0.25
-    },
-    {
-      "type": "area",
-      "at": "caster",
+      "at": "target",
       "direction": "caster",
-      "delay": 12,
-      "radius": 3.2,
-      "damage": 5,
+      "delay": 4,
+      "radius": 2.6,
+      "max_targets": 1,
+      "damage": 9,
       "damage_type": "physical",
       "knockback": 0.6,
       "vfx": [
@@ -129,17 +149,17 @@
           "particle": "pixelclasses:slash",
           "shape": "stamp",
           "count": 1,
-          "size": 1.7,
-          "roll": 30,
-          "length": 1.4,
-          "y_offset": 1.1
+          "size": 1.9,
+          "roll": 45,
+          "length": 0.0,
+          "y_offset": 1.0
         },
         {
           "particle": "pixelclasses:sparkle",
           "shape": "stamp",
-          "count": 5,
-          "length": 1.4,
-          "y_offset": 1.1,
+          "count": 6,
+          "length": 0.0,
+          "y_offset": 1.0,
           "spread": 0.9,
           "speed": 0.05
         },
@@ -147,8 +167,8 @@
           "particle": "pixelclasses:shard",
           "shape": "stamp",
           "count": 2,
-          "length": 1.4,
-          "y_offset": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0,
           "spread": 0.5,
           "speed": 0.12
         },
@@ -157,28 +177,28 @@
           "color": "#B070FF",
           "size": 0.6,
           "shape": "slash",
-          "radius": 2.1533333333333333,
+          "radius": 2.4066666666666667,
           "angle": 140,
-          "roll": 30,
-          "length": 1.3,
-          "y_offset": 1.1,
+          "roll": 45,
+          "length": 0.0,
+          "y_offset": 1.0,
           "count": 16
         },
         {
           "particle": "pixelclasses:slash",
           "shape": "stamp",
           "count": 1,
-          "size": 1.7,
-          "roll": -30,
-          "length": 1.4,
-          "y_offset": 1.1
+          "size": 1.9,
+          "roll": -45,
+          "length": 0.0,
+          "y_offset": 1.0
         },
         {
           "particle": "pixelclasses:sparkle",
           "shape": "stamp",
           "count": 0,
-          "length": 1.4,
-          "y_offset": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0,
           "spread": 0.9,
           "speed": 0.05
         },
@@ -186,8 +206,8 @@
           "particle": "pixelclasses:shard",
           "shape": "stamp",
           "count": 2,
-          "length": 1.4,
-          "y_offset": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0,
           "spread": 0.5,
           "speed": 0.12
         },
@@ -196,12 +216,29 @@
           "color": "#B070FF",
           "size": 0.6,
           "shape": "slash",
-          "radius": 2.1533333333333333,
+          "radius": 2.4066666666666667,
           "angle": 140,
-          "roll": -30,
-          "length": 1.3,
-          "y_offset": 1.1,
+          "roll": -45,
+          "length": 0.0,
+          "y_offset": 1.0,
           "count": 16
+        },
+        {
+          "particle": "pixelclasses:swirl",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.1,
+          "length": 0.0,
+          "y_offset": 1.0
+        }
+      ],
+      "hit_vfx": [
+        {
+          "particle": "pixelclasses:burst",
+          "shape": "stamp",
+          "count": 1,
+          "size": 1.4,
+          "length": 0.0
         }
       ],
       "sound": {
@@ -210,5 +247,9 @@
         "pitch": 1.0
       }
     }
-  ]
+  ],
+  "target": {
+    "required": true,
+    "range": 12
+  }
 }

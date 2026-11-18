@@ -24,5 +24,6 @@
   "screen.pixelclasses.tt_scales": "Scales with %s (Pixel Stats): +%s per point",
   "message.pixelclasses.no_mana": "Not enough mana!",
   "message.pixelclasses.change_locked": "You cannot change your class on this server.",
-  "item.pixelclasses.shadow_dagger": "Shadow Dagger"
+  "item.pixelclasses.shadow_dagger": "Shadow Dagger",
+  "message.pixelclasses.need_target": "Aim at a target to use this skill!"
 }

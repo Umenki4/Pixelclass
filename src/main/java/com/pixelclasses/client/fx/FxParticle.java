@@ -13,7 +13,8 @@ public class FxParticle extends TextureSheetParticle {
         SWIRL(1.4F, 12, 2),
         SPARKLE(0.18F, 14, 6),
         SHARD(0.12F, 18, 8),
-        GLOW(0.25F, 10, 3);
+        GLOW(0.25F, 10, 3),
+        BURST(1.0F, 14, 0);   // 16-frame animation (the purple explosion), plays once
 
         final float size;
         final int life;
@@ -29,10 +30,12 @@ public class FxParticle extends TextureSheetParticle {
     private final Kind kind;
     private final float baseSize;
     private final float spin;
+    private final SpriteSet sprites;
 
     protected FxParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprites, Kind kind) {
         super(level, x, y, z, vx, vy, vz);
         this.kind = kind;
+        this.sprites = sprites;
         this.xd = vx;
         this.yd = vy;
         this.zd = vz;
@@ -65,6 +68,9 @@ public class FxParticle extends TextureSheetParticle {
         this.oRoll = this.roll;
         this.roll += this.spin;
         super.tick();
+        if (kind == Kind.BURST) {
+            this.setSpriteFromAge(this.sprites);
+        }
         float t = Math.min(1.0F, (float) this.age / (float) this.lifetime);
         this.alpha = switch (kind) {
             case SLASH -> 1.0F - t * t;
@@ -72,6 +78,7 @@ public class FxParticle extends TextureSheetParticle {
             case SPARKLE -> Mth.sin(t * (float) Math.PI);
             case SHARD -> 1.0F - t;
             case GLOW -> 0.85F * (1.0F - t);
+            case BURST -> 1.0F;
         };
     }
 
@@ -83,6 +90,7 @@ public class FxParticle extends TextureSheetParticle {
             case SWIRL -> 0.5F + 0.9F * t;
             case SPARKLE -> Mth.sin(t * (float) Math.PI);
             case SHARD, GLOW -> 1.0F - 0.6F * t;
+            case BURST -> 1.0F;
         };
         return this.baseSize * Math.max(0.05F, f);
     }

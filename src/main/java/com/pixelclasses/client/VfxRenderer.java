@@ -13,12 +13,16 @@ import net.minecraft.world.phys.Vec3;
 public final class VfxRenderer {
     private VfxRenderer() {}
 
-    public static void play(Vec3 pos, Vec3 dir, List<VfxSpec> specs) {
+    public static void play(Vec3 pos, Vec3 dir, List<VfxSpec> specs, int flightId) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
             return;
         }
         for (VfxSpec spec : specs) {
+            if (spec.shape.equals("model")) {   // a flying 3D model (see ModelProjectiles), not a particle
+                ModelProjectiles.spawn(spec, pos, dir, flightId);
+                continue;
+            }
             ParticleOptions options = spec.options();
             if (options == null) {
                 continue;

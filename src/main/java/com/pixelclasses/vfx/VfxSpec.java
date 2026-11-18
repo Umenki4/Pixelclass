@@ -134,6 +134,10 @@ public final class VfxSpec {
                 b.readFloat(), b.readFloat(), b.readFloat(), Math.max(1, Math.min(400, b.readVarInt())));
     }
 
+    public VfxSpec withLength(float newLength) {
+        return new VfxSpec(particle, color, color2, size, shape, radius, height, turns, yOffset, angle, roll, newLength, speed, sx, sy, sz, count);
+    }
+
     /** The particle to spawn, or null if the particle id is unknown (then the effect is silently skipped). */
     public ParticleOptions options() {
         if (!resolved) {

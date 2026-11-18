@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -17,6 +20,8 @@ public final class SkillContext {
         Vec3 eye;
         Vec3 look;
         final Map<Integer, Vec3> aim = new HashMap<>();
+        UUID targetId;
+        Vec3 targetPos;
     }
 
     public final MinecraftServer server;
@@ -37,11 +42,42 @@ public final class SkillContext {
         this.shared = shared;
     }
 
-    public static SkillContext create(ServerPlayer caster, double power) {
+    public static SkillContext create(ServerPlayer caster, double power, LivingEntity target) {
         Shared s = new Shared();
         s.eye = caster.getEyePosition();
         s.look = caster.getLookAngle();
+        if (target != null) {
+            s.targetId = target.getUUID();
+            s.targetPos = target.position();
+        }
         return new SkillContext(caster.server, caster.getUUID(), caster.position(), s.look, true, power, s);
+    }
+
+    /** True if this skill locked onto a target when it was cast. */
+    public boolean hasTarget() {
+        return shared.targetId != null;
+    }
+
+    /** The locked target while it is still alive, else null. */
+    public LivingEntity target(ServerLevel level) {
+        if (shared.targetId == null) {
+            return null;
+        }
+        Entity e = level.getEntity(shared.targetId);
+        if (e instanceof LivingEntity living && living.isAlive()) {
+            shared.targetPos = living.position();
+            return living;
+        }
+        return null;
+    }
+
+    /** Where the locked target is (its last known position if it died), or null if the skill has no target. */
+    public Vec3 targetPos(ServerLevel level) {
+        if (shared.targetId == null) {
+            return null;
+        }
+        target(level);
+        return shared.targetPos;
     }
 
     /** A child context at another position/direction (used for projectile hits, explosions, ...). */

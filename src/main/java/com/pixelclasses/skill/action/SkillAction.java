@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 
 /**
  * One building block of a skill. Every action type supports these common JSON fields:
- *   delay (ticks), repeat {count, interval}, scatter, y_offset, at (context|caster|eye|aim), aim_range,
+ *   delay (ticks), repeat {count, interval}, scatter, y_offset, at (context|caster|eye|aim|target), aim_range,
  *   direction (look|caster|flat|down|up), vfx [..], sound {..}
  */
 public abstract class SkillAction {
@@ -88,6 +88,10 @@ public abstract class SkillAction {
             case "caster" -> caster.position();
             case "eye" -> caster.getEyePosition();
             case "aim" -> ctx.aimPoint(caster, aimRange);
+            case "target" -> {
+                Vec3 t = ctx.targetPos(caster.serverLevel());
+                yield t != null ? t : caster.position();
+            }
             default -> ctx.origin;
         };
         if (scatter > 0) {
